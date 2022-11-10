@@ -1,0 +1,15 @@
+---
+author: "Jon Karanezi, Madeline Olson, Kaitlyn Schott, Ferris Wolf, Simon Wu" 
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(broman)
+source("viridis.R")
+source("ggprob.R")
+```
+
+```{r, include=FALSE}
+amazon = read_csv("dataset.csv")
+```
