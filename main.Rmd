@@ -12,4 +12,5 @@ source("ggprob.R")
 
 ```{r, include=FALSE}
 amazon = read_csv("dataset.csv")
+# TODO Clean amazon csv file
 ```
