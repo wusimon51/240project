@@ -12,5 +12,41 @@ source("ggprob.R")
 
 ```{r, include=FALSE}
 amazon = read_csv("dataset.csv")
-# TODO Clean amazon csv file
+
+amazon1 = amazon%>% 
+  filter(position_first_wholly_non_amazon <= 5)
+# DATA CLEANING
 ```
+
+# Question 1:
+- For amazon vs non_amazon products that ranked in top 10 search, what is the distribution of review amounts? 
+```{r}
+# Filter data
+amazon_10 = amazon %>% 
+  filter(position_first_amazon <= 10) %>% 
+  pull(amazon_reviews)
+
+# Note that this has more data points than amazon products
+# Take sample of matching length to first one
+non_amazon_10 = amazon %>% 
+  filter(position_first_non_amazon <= 10) %>% 
+  pull(non_amazon_reviews)
+
+# Merge data
+stars = data.frame(
+  "amazon" = amazon_10,
+  "non_amazon" = sample(non_amazon_10, length(amazon_10))
+  
+)
+
+stars = stars %>% 
+  pivot_longer(cols = 1:2, names_to ="product_type", values_to = "stars")
+
+# Plot - also removing outliers
+ggplot(stars, aes(x = product_type, y = stars)) +
+  geom_boxplot(outlier.shape = NA) +
+  coord_cartesian(ylim=c(0, 20000))
+
+# Use a side by side box plot to showcase this
+```
+
