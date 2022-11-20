@@ -11,26 +11,42 @@ source("ggprob.R")
 ```
 
 ```{r, include=FALSE}
-amazon = read_csv("dataset.csv")
-
-amazon1 = amazon%>% 
-  filter(position_first_wholly_non_amazon <= 5)
-# DATA CLEANING
+amazon = read_csv("dataset.csv") %>%
+    drop_na() %>%
+    rename(
+        amazon = position_first_amazon,
+        partner = position_first_non_amazon,
+        third_party = position_first_wholly_non_amazon,
+        partner_stars = non_amazon_stars,
+        partner_reviews = non_amazon_reviews,
+        third_party_stars = wnon_amazon_stars,
+        third_party_reviews = wnon_amazon_reviews
+    )
 ```
 
-# Question 1:
-- For amazon vs non_amazon products that ranked in top 10 search, what is the distribution of review amounts? 
+# Does Amazon Manipulate its Search Results?
+
+## Introduction
+Our dataset is a subset of search queries on Amazon from a GitHub repository created by The Markup on October 14, 2021. They collected 3,492 different queries and accumulated different information based on each query. We are interested in this data because it relates Amazon products and their quality to those of Amazon partners and independent retailers.
+
+Using this data, we came up with a research question to help us explore the similarities and differences between these groups: How do products from Amazon compare to similar products from either partners of Amazon or independent sellers in terms of reviews, quality, and position on the website?
+
+## Data
+This data includes three main categories relating to the Amazon search queries—position on the results page, Amazon stars, and Amazon review count. These 3 categories were made for each group: Amazon products, partners of Amazon, and products that are independent from Amazon. Amazon stars are rated on a scale of 0 to 5—as products score approaches 5 they are considered a better product. For position on Amazon, the highest possible place would be 1.0. As products approach 1.0, they are considered to be of more relevance to the search query. As the number of reviews increases, the item is reflected to increase in popularity and frequency. If there is a high number of reviews and a high star rating, that would indicate that the product is high-quality and tested out by many consumers. 
+
+### Question 1
+- For Amazon and non-Amazon products that ranked in top 10 search, what is the distribution of review amounts? 
 ```{r}
 # Filter data
 amazon_10 = amazon %>% 
-  filter(position_first_amazon <= 10) %>% 
+  filter(amazon <= 10) %>% 
   pull(amazon_reviews)
 
 # Note that this has more data points than amazon products
 # Take sample of matching length to first one
 non_amazon_10 = amazon %>% 
-  filter(position_first_non_amazon <= 10) %>% 
-  pull(non_amazon_reviews)
+  filter(partner <= 10) %>% 
+  pull(partner_reviews)
 
 # Merge data
 stars = data.frame(
@@ -42,11 +58,50 @@ stars = data.frame(
 stars = stars %>% 
   pivot_longer(cols = 1:2, names_to ="product_type", values_to = "stars")
 
-# Plot - also removing outliers
+# Box Plot - also removing outliers
 ggplot(stars, aes(x = product_type, y = stars)) +
   geom_boxplot(outlier.shape = NA) +
-  coord_cartesian(ylim=c(0, 20000))
+  coord_cartesian(ylim=c(0, 20000)) +
+  ggtitle("Amazon vs Third-Party Stars") +
+  xlab("Product Type") +
+  ylab("Stars")
 
 # Use a side by side box plot to showcase this
 ```
 
+### Question 2
+- What is the distribution of positions for Amazon products in search results?
+```{r}
+amazon %>%
+    ggplot(aes(x=amazon)) +
+    geom_bar() +
+    ggtitle("Distribution of Positions for Amazon Products") +
+    xlab("Amazon Product") +
+    ylab("Frequency")
+```
+
+## Methods
+We conduct two hypothesis tests: the first one is that Amazon products are on average placed higher than third-party products, and the second is that Amazon partner products are on average placed higher than third-party products. With these hypothesis tests on the differences in means, we can present our numerical results as an answer to whether Amazon and partner products are placed higher than third-party products. We will then run summary statistics on stars and reviews comparing the same groups to see if our mean positions are justified, i.e. a product with a higher star rating and more reviews is placed higher than the rest. 
+
+### Question 3
+- Hypothesis Test: Are Amazon products on average placed higher than those from 
+third-party sellers?
+
+```{r}
+amazon %>%
+    summarize(n = n(), mean = mean(amazon), sd = sd(amazon))
+
+
+```
+
+### Question 4
+- Hypothesis Test: Are Amazon partner products on average placed higher than 
+those from third-party sellers?
+```{r}
+
+```
+
+## Discussion
+After running our methods on the dataset, we hope to achieve an answer as to how Amazon creates its search results, whether it places products from itself and its partners above products from third-party sellers. This is done after taking stars and review counts into consideration. The implications of this could be that Amazon manipulates its search results, where it favors third-party products the least despite having better stars and more reviews.
+
+## Conclusion
