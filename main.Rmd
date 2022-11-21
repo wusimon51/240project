@@ -97,17 +97,66 @@ We conduct two hypothesis tests: the first one is that Amazon products are on av
 third-party sellers?
 
 ```{r}
-amazon %>%
-    summarize(n = n(), mean = mean(amazon), sd = sd(amazon))
+#Used pivot_longer to put name of retailer in its own column
+amazon_longer = amazon %>% 
+  select(amazon, partner, third_party) %>% 
+  pivot_longer(c(amazon, partner, third_party), 
+               names_to = 'retailer', values_to = 'position')
+#summary of n, mean, and sd of each retailer
+amazon_longer %>% 
+  group_by(retailer) %>% 
+  summarize(n = n(), mean = mean(position), sd = sd(position))
+```
 
+```{r}
+#Code modified from lizard examples in class to calculate 95% confidence interval of
+#Amazon compared to third party
+#Note that 0 is within the interval, which supports the null hypothesis
+amazon_sum = amazon %>% 
+  mutate(diff = amazon-third_party) %>% 
+  summarize(n = n(),
+            mean = mean(diff),
+            sd = sd(diff),
+            r = cor(amazon, third_party))
 
+ci_calc = amazon_sum %>% 
+  mutate(se = sd/sqrt(n), 
+         tmult = qt(0.975, n-1), 
+         me = tmult*se,
+         low = mean - me, 
+         high = mean + me)
+
+ci = ci_calc %>% 
+  select(low, high)
+
+ci
 ```
 
 ### Question 4
 - Hypothesis Test: Are Amazon partner products on average placed higher than 
 those from third-party sellers?
 ```{r}
+#Repeated process with Third Party vs Partner
+#Note that confidence interval is 14.0-15.2, which does not include 0
+#This data rejects the null hypothesis
+amazon_sum2 = amazon %>% 
+  mutate(diff = third_party-partner) %>% 
+  summarize(n = n(),
+            mean = mean(diff),
+            sd = sd(diff),
+            r = cor(partner, third_party))
 
+ci_calc = amazon_sum2 %>% 
+  mutate(se = sd/sqrt(n), 
+         tmult = qt(0.975, n-1), 
+         me = tmult*se,
+         low = mean - me, 
+         high = mean + me)
+
+ci = ci_calc %>% 
+  select(low, high)
+
+ci
 ```
 
 ## Discussion
