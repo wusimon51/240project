@@ -2,11 +2,6 @@
 author: "Jon Karanezi, Madeline Olson, Kaitlyn Schott, Ferris Wolf, Simon Wu" 
 output: html_document
 ---
-## RECENT REVISIONS: add recent revisions you made, once someone else sees this, they can delete previous revisions and add new things if needed
-
-- Modified Introduction
-- Added source + limitation section
-
 
 ```{r setup, include=FALSE}
 library(tidyverse)
