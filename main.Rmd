@@ -2,13 +2,17 @@
 author: "Jon Karanezi, Madeline Olson, Kaitlyn Schott, Ferris Wolf, Simon Wu" 
 output: html_document
 ---
+## RECENT REVISIONS: add recent revisions you made, once someone else sees this, they can delete previous revisions and add new things if needed
+
+- Modified Introduction
+- Added source + limitation section
+
 
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(broman)
 source("viridis.R")
 source("ggprob.R")
-#test comment here
 ```
 
 ```{r, include=FALSE}
@@ -28,7 +32,11 @@ amazon = read_csv("dataset.csv") %>%
 # Does Amazon Manipulate its Search Results?
 
 ## Introduction
-Our dataset is a subset of search queries on Amazon from a GitHub repository created by The Markup on October 14, 2021. They collected 3,492 different queries and accumulated different information based on each query. We are interested in this data because it relates Amazon products and their quality to those of Amazon partners and independent retailers.
+Our dataset is a subset of search queries on Amazon from a GitHub repository created by The Markup on October 14, 2021.
+
+The actual data retrieval was done on January 21st, 2021 from a single location, Washington D.C. 
+
+Given the author's standards regarding amazon brands, the data collected was narrowed to 3,492 different queries and accumulated different information based on each query. We are interested in this data because it relates Amazon products and their quality to those of Amazon partners and independent retailers.
 
 Using this data, we came up with a research question to help us explore the similarities and differences between these groups: How do products from Amazon compare to similar products from either partners of Amazon or independent sellers in terms of reviews, quality, and position on the website?
 
@@ -36,7 +44,7 @@ Using this data, we came up with a research question to help us explore the simi
 This data includes three main categories relating to the Amazon search queries—position on the results page, Amazon stars, and Amazon review count. These 3 categories were made for each group: Amazon products, partners of Amazon, and products that are independent from Amazon. Amazon stars are rated on a scale of 0 to 5—as products score approaches 5 they are considered a better product. For position on Amazon, the highest possible place would be 1.0. As products approach 1.0, they are considered to be of more relevance to the search query. As the number of reviews increases, the item is reflected to increase in popularity and frequency. If there is a high number of reviews and a high star rating, that would indicate that the product is high-quality and tested out by many consumers. 
 
 ### Question 1
-- For Amazon and non-Amazon products that ranked in top 10 search, what is the distribution of review amounts? 
+- For Amazon and non-Amazon (partner) products that ranked in top 10 search, what is the distribution of review amounts? 
 ```{r}
 # Filter data
 amazon_10 = amazon %>% 
@@ -105,4 +113,11 @@ those from third-party sellers?
 ## Discussion
 After running our methods on the dataset, we hope to achieve an answer as to how Amazon creates its search results, whether it places products from itself and its partners above products from third-party sellers. This is done after taking stars and review counts into consideration. The implications of this could be that Amazon manipulates its search results, where it favors third-party products the least despite having better stars and more reviews.
 
+## Limitations of our Study
+
 ## Conclusion
+
+## Sources:
+- https://medium.com/@Shoemaker703/how-does-amazon-select-the-top-product-in-its-search-results-and-why-is-it-usually-one-of-amazons-662d122591d0
+
+- https://github.com/the-markup/investigation-amazon-brands
