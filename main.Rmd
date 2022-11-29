@@ -82,7 +82,8 @@ amazon %>%
     geom_bar() +
     ggtitle("Distribution of Positions for Amazon Products") +
     xlab("Amazon Product") +
-    ylab("Frequency")
+    ylab("Frequency") 
+
 ```
 
 ### Question 3
@@ -99,7 +100,9 @@ We conduct two hypothesis tests: the first one is that Amazon products are on av
 - Hypothesis Test: Are Amazon products on average placed higher than those from 
 third-party sellers?
 
-```{r}
+>We will answer this question by performing a series of mutations on our data in order to calculate two distinct values. First, we will find the difference in values between these two groups, and use these values to search for the true mean between them. In order to do that, we will construct a 95% confidence interval of where we think the true mean resides. Finally, we will calculate a t-statistic and use this to calculate a p-value to show how probable our hypothesized mean is compared to the true mean. For both tests, in order to test if one group is higher than the other, we will first need to test if both groups are similar. To test similarity, we will predict a mean of 0. If 0 is within the 95% confidence interval, we can assume that there is a probable chance it is the true mean. This is similar to our p-value. If the p-value is over 0.05, we can assume that there is a statistically significant chance that our predicted value could be the true mean. 
+
+```{r, include = FALSE}
 #Used pivot_longer to put name of retailer in its own column
 amazon_longer = amazon %>% 
   select(amazon, partner, third_party) %>% 
@@ -111,7 +114,25 @@ amazon_longer %>%
   summarize(n = n(), mean = mean(position), sd = sd(position))
 ```
 
-```{r}
+Model 
+$$
+X \ | \ p = Normal(2327, p)
+$$
+Hypothesis test
+$$
+H_0 : p = .5     \\
+H_a : p \ne .5
+$$
+Our test statistic is X
+
+If the null hypothesis is true, then:
+$$ 
+X \sim Normal(2327, .5)
+$$
+
+>After our calculations, we have constructed a confidence interval for the mean of our two groups:
+
+```{r, echo=FALSE}
 #Code modified from lizard examples in class to calculate 95% confidence interval of
 #Amazon compared to third party
 #Note that 0 is within the interval, which supports the null hypothesis
@@ -120,7 +141,8 @@ amazon_sum = amazon %>%
   summarize(n = n(),
             mean = mean(diff),
             sd = sd(diff),
-            r = cor(amazon, third_party))
+            r = cor(amazon, third_party),
+            t = mean/(sd/sqrt(n)))
 
 ci_calc = amazon_sum %>% 
   mutate(se = sd/sqrt(n), 
@@ -135,10 +157,45 @@ ci = ci_calc %>%
 ci
 ```
 
+>We are 95% confident that the average difference in position between amazon products and third party products is between -0.366 and 1.45. Note that this includes 0, which provides evidence supporting the null hypothesis that the two sets of products are similar. 
+
+>Next, we calculate the p-value: 
+
+```{r, echo=FALSE}
+pvalue = 2*pt(-abs(amazon_sum$t), amazon_sum$n-1)
+pvalue
+```
+
+>There is a good chance (p = .24) that the mean difference in position between amazon products and third party products is 0. 
+
 ### Question 5
 - Hypothesis Test: Are Amazon partner products on average placed higher than 
 those from third-party sellers?
-```{r}
+
+>We will then repeat our hypothesis test for comparing Third Party products vs Partner products.
+
+Model 
+$$
+X \ | \ p = Normal(2327, p)
+$$
+
+
+Hypothesis test
+$$
+H_0 : p = .5     \\
+H_a : p \ne .5
+$$
+Our test statistic is X
+
+If the null hypothesis is true, then:
+
+$$ 
+X \sim Normal(2327, .5)
+$$
+
+>Same as last time, we now construct a confidence interval for the mean of our two groups. 
+
+```{r, echo = FALSE}
 #Repeated process with Third Party vs Partner
 #Note that confidence interval is 14.0-15.2, which does not include 0
 #This data rejects the null hypothesis
@@ -147,7 +204,8 @@ amazon_sum2 = amazon %>%
   summarize(n = n(),
             mean = mean(diff),
             sd = sd(diff),
-            r = cor(partner, third_party))
+            r = cor(partner, third_party),
+            t = mean/(sd/sqrt(n)))
 
 ci_calc = amazon_sum2 %>% 
   mutate(se = sd/sqrt(n), 
@@ -161,6 +219,15 @@ ci = ci_calc %>%
 
 ci
 ```
+>We are 95% confident that the mean difference between third party products and partner products is between 14.0 and 15.2. Note that 0 is not within our confidence interval, as opposed to the previous hypothesis test. This, on the other hand, provides evidence contrary to the null hypothesis, which would then suggest that the two sets of products are not similar. 
+
+>And again, we calculate our p value to test how probable our hypothesized mean of 0 is when compared to the mean of our dataset. 
+```{r, echo=FALSE}
+pvalue = 2*pt(-abs(amazon_sum2$t), amazon_sum2$n-1)
+pvalue
+```
+>(Note that the calulated value was so small, our computer was forced to round to 0)
+>We are almost certain (p≈0) that the mean difference between third party products and partner products is not 0. 
 
 ## Discussion
 After running our methods on the dataset, we hope to achieve an answer as to how Amazon creates its search results, whether it places products from itself and its partners above products from third-party sellers. This is done after taking stars and review counts into consideration. The implications of this could be that Amazon manipulates its search results, where it favors third-party products the least despite having better stars and more reviews.
