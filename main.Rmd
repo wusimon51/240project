@@ -10,6 +10,19 @@ source("viridis.R")
 source("ggprob.R")
 ```
 
+
+```{r}
+# inputs - original data (File size is huge) 
+# fn_search = 'searches.csv.xz'
+# fn_products = 'products.csv.xz'
+# fn_amazon = 'amazon_private_label.csv.xz'
+# 
+# search = read_csv(fn_search)
+# products = read_csv(fn_products)
+# amazon_label = read_csv(fn_amazon)
+```
+
+
 ```{r, include=FALSE}
 amazon = read_csv("dataset.csv") %>%
     drop_na() %>%
@@ -37,6 +50,37 @@ Using this data, we came up with a research question to help us explore the simi
 
 ## Data
 This data includes three main categories relating to the Amazon search queries—position on the results page, Amazon stars, and Amazon review count. These 3 categories were made for each group: Amazon products, partners of Amazon, and products that are independent from Amazon. Amazon stars are rated on a scale of 0 to 5—as products score approaches 5 they are considered a better product. For position on Amazon, the highest possible place would be 1.0. As products approach 1.0, they are considered to be of more relevance to the search query. As the number of reviews increases, the item is reflected to increase in popularity and frequency. If there is a high number of reviews and a high star rating, that would indicate that the product is high-quality and tested out by many consumers. 
+### Preliminary Studies
+- Not showing what we want to see, check it out
+```{r}
+# Summarizing Star and Reviews averages
+summary = amazon %>% 
+  select(-search_term) %>% 
+  summarize(amazon = mean(amazon_stars),
+            partner = mean(partner_stars),
+            third_party = mean(third_party_stars))
+
+summary1 = amazon %>% 
+  select(-search_term) %>% 
+  summarize(amazon = mean(amazon_reviews),
+            partner = mean(partner_reviews),
+            third_party = mean(third_party_reviews))
+
+prop_third_party = amazon %>% 
+  filter(third_party_stars < partner_stars & third_party_stars < amazon_stars)
+
+prop_partner= amazon %>% 
+  filter(partner_stars < third_party_stars & partner_stars < amazon_stars)
+
+prop_amazon = amazon %>% 
+  filter(amazon_stars < partner_stars & amazon_stars < third_party_stars)
+
+tibble(
+  prop_amazon = nrow(prop_amazon) / nrow(amazon),
+  prop_third = nrow(prop_third_party) / nrow(amazon),
+  prop_partner = nrow(prop_partner) / nrow(amazon)
+)
+```
 
 ### Question 1
 - For Amazon and non-Amazon (partner) products that ranked in top 10 search, what is the distribution of review and star amounts? 
@@ -61,6 +105,8 @@ stars = data.frame(
 
 stars = stars %>% 
   pivot_longer(cols = 1:2, names_to ="product_type", values_to = "stars")
+
+# Get averages
 
 # Box Plot - also removing outliers
 ggplot(stars, aes(x = stars)) +
