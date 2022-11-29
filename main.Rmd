@@ -39,18 +39,18 @@ Using this data, we came up with a research question to help us explore the simi
 This data includes three main categories relating to the Amazon search queries—position on the results page, Amazon stars, and Amazon review count. These 3 categories were made for each group: Amazon products, partners of Amazon, and products that are independent from Amazon. Amazon stars are rated on a scale of 0 to 5—as products score approaches 5 they are considered a better product. For position on Amazon, the highest possible place would be 1.0. As products approach 1.0, they are considered to be of more relevance to the search query. As the number of reviews increases, the item is reflected to increase in popularity and frequency. If there is a high number of reviews and a high star rating, that would indicate that the product is high-quality and tested out by many consumers. 
 
 ### Question 1
-- For Amazon and non-Amazon (partner) products that ranked in top 10 search, what is the distribution of review amounts? 
+- For Amazon and non-Amazon (partner) products that ranked in top 10 search, what is the distribution of review and star amounts? 
 ```{r}
 # Filter data
 amazon_10 = amazon %>% 
   filter(amazon <= 10) %>% 
-  pull(amazon_reviews)
+  pull(amazon_stars)
 
 # Note that this has more data points than amazon products
 # Take sample of matching length to first one
 non_amazon_10 = amazon %>% 
-  filter(partner <= 10) %>% 
-  pull(partner_reviews)
+  filter(third_party <= 10) %>% 
+  pull(third_party_stars)
 
 # Merge data
 stars = data.frame(
@@ -63,12 +63,13 @@ stars = stars %>%
   pivot_longer(cols = 1:2, names_to ="product_type", values_to = "stars")
 
 # Box Plot - also removing outliers
-ggplot(stars, aes(x = product_type, y = stars)) +
-  geom_boxplot(outlier.shape = NA) +
-  coord_cartesian(ylim=c(0, 20000)) +
+ggplot(stars, aes(x = stars)) +
+  geom_histogram(outlier.shape = NA) +
+  #coord_cartesian(ylim=c(0, 20000)) +
   ggtitle("Amazon vs Third-Party Stars") +
   xlab("Product Type") +
-  ylab("Stars")
+  ylab("Stars") +
+  facet_wrap(vars(product_type))
 
 # Use a side by side box plot to showcase this
 ```
@@ -84,10 +85,17 @@ amazon %>%
     ylab("Frequency")
 ```
 
+### Question 3
+- What is the difference in correlation for stars and reviews in amazon and non-amazon products?
+```{r}
+
+```
+
+
 ## Methods
 We conduct two hypothesis tests: the first one is that Amazon products are on average placed higher than third-party products, and the second is that Amazon partner products are on average placed higher than third-party products. With these hypothesis tests on the differences in means, we can present our numerical results as an answer to whether Amazon and partner products are placed higher than third-party products. We will then run summary statistics on stars and reviews comparing the same groups to see if our mean positions are justified, i.e. a product with a higher star rating and more reviews is placed higher than the rest. 
 
-### Question 3
+### Question 4
 - Hypothesis Test: Are Amazon products on average placed higher than those from 
 third-party sellers?
 
@@ -127,7 +135,7 @@ ci = ci_calc %>%
 ci
 ```
 
-### Question 4
+### Question 5
 - Hypothesis Test: Are Amazon partner products on average placed higher than 
 those from third-party sellers?
 ```{r}
