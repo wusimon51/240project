@@ -80,7 +80,7 @@ amazon %>%
     ggplot(aes(x=amazon)) +
     geom_bar() +
     ggtitle("Distribution of Positions for Amazon Products") +
-    xlab("Amazon Product") +
+    xlab("Position on Amazon") +
     ylab("Frequency")
 ```
 
