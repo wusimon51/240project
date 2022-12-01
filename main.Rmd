@@ -104,6 +104,7 @@ mean(study_non_amazon)
 sd(study_non_amazon)
 ```
 
+- Setting threshold at n = 3, meaning if a amazon product shows up in the first 3 results, we can consider it a general product, and if n > 3, then the product can be considered specific.
 
 ### Question 1
 - For Amazon and non-Amazon (partner) products that ranked in top 10 search, what is the distribution of review and star amounts? 
