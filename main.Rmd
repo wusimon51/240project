@@ -80,7 +80,29 @@ tibble(
   prop_third = nrow(prop_third_party) / nrow(amazon),
   prop_partner = nrow(prop_partner) / nrow(amazon)
 )
+
+# This snippet highlights how what you search affects the placement drastically
+
+# If we consider products where Amazon does not have the 1st spot
+study_amazon = amazon %>% 
+  filter(amazon != 1) %>% 
+  pull(amazon)
+
+# The amazon products get placed very low
+mean(study_amazon)
+sd(study_amazon)
+
+
+# In contrast, if we consider where amazon products are 1
+study_non_amazon = amazon %>% 
+  filter(amazon == 1) %>% 
+  pull(partner)
+
+# The partner products don't get placed as lower. Meaning, that even if the third party products aren't first, they are still placed closer to the top of results
+mean(study_non_amazon)
+sd(study_non_amazon)
 ```
+
 
 ### Question 1
 - For Amazon and non-Amazon (partner) products that ranked in top 10 search, what is the distribution of review and star amounts? 
@@ -290,6 +312,7 @@ After running our methods on the dataset, we hope to achieve an answer as to how
 ## Limitations of our Study
 
 >Possible talking points: Limitations of data, other studies, sample size, manipulation of reviews/stars now shown in data
+>
 
 ## Conclusion
 
