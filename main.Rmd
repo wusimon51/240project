@@ -102,6 +102,8 @@ sd(study_non_amazon)
 
 ### How do General and Specific Search Terms Position Averages Vary?
 
+>We answer this by comparing general and specific search queries average position using boxplots between Amazon and partner products.
+
 ```{r}
 specific_search = amazon %>% 
   filter(is_general == "no") %>% 
@@ -133,7 +135,7 @@ ggplot(general_search, aes(x=product_type, y=position)) +
 
 ```
 
->These boxplots compare positions for Amazon and partner products between general and specific search queries. The boxplots reveal that for general queries, Amazon typically has its own brand for general products and will rank it high; however, there are many partnering products that come up right behind it therefore the means are similar hovering around 1 and 3. As for specific searches, Amazon typically does not have its own brand, causing the average to dip around 19 whereas partner products average remains high around 2.
+>These boxplots compare positions for Amazon and partner products between general and specific search queries. The boxplots reveal that for general queries, Amazon typically has its own brand for general products and will rank it high; however, there are many partnering products that come up right behind it therefore the means are similar hovering around 1 and 3. As for specific searches, Amazon typically does not have its own brand, causing the average to dip around 19 whereas partner products average remains high around 2. This concludes that for general products, Amazon tends to have a product for that and consequently position itself much higher; however, for specific products Amazon typcially lacks its own version and will position itself significantly lower.
 
 ### Question 1
 - For Amazon and non-Amazon (partner) products that ranked in top 10 search, what is the distribution of review and star amounts? 
