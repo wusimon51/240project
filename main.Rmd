@@ -6,6 +6,7 @@ output: html_document
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(broman)
+library(modelr)
 source("viridis.R")
 source("ggprob.R")
 ```
@@ -139,13 +140,38 @@ amazon %>%
 
 
 ### Question 3
-- What is the difference in correlation for stars and reviews in amazon and non-amazon products?
-```{r}
-#Graph both side by side (pivot longer?) and use cor(x,y)
-#or residual graph? That may be better (look to hw 10 q 5)
-#Using cor(x,y), find difference between them and interpret what difference means
+- What is the difference in correlation for stars and reviews in products where Amazon is first compared to where non-amazon products come first?
+
+>We first filter products in which Amazon's position on the website is higher than the other two. Comparing stars to reviews, we generate a linear relationship between the two and graph the residuals based on our line of best fit. After that, we calculate the correlation coefficient relating our two variables. 
+
+```{r, echo = F}
+amazon_first = amazon %>% filter(amazon < partner) %>% select(starts_with('amazon'))
+amazon_lm = lm(amazon_stars ~ amazon_reviews, data = amazon_first)
+amazon_first = amazon_first %>% add_residuals(amazon_lm)
+ggplot(amazon_first) + aes(amazon_reviews, resid) + geom_point() +
+  scale_x_log10()+ geom_hline(yintercept = 0, color = 'red', linetype = 'dashed')
+correlation1 = cor(amazon_first$amazon_stars, amazon_first$amazon_reviews)
+correlation1
 ```
 
+-The spread of the residuals in this plot is pretty evenly spread out, with a correlation coefficient of .27. While this is low, it's expected not to have a perfect correlation as most products are rated very close together. 
+
+>Next, we do the same thing as before, but instead we look at products in which Amazon didn't come first. 
+
+```{r, echo = F}
+non_amazon_first = amazon %>% filter(partner < amazon) %>% select(starts_with('partner'))
+non_amazon_lm = lm(partner_stars ~ partner_reviews, data = non_amazon_first)
+non_amazon_first = non_amazon_first %>% add_residuals(non_amazon_lm)
+ggplot(non_amazon_first) + aes(partner_reviews, resid) + geom_point()+
+  scale_x_log10() + geom_hline(yintercept = 0, color = 'red', linetype = 'dashed')
+correlation2 = cor(non_amazon_first$partner_stars, non_amazon_first$partner_reviews)
+correlation2
+```
+
+-The spread of the residuals in this plot is much worse than the previous one. Note how the dashed line 0 represents the middle of the spread, which is not shown in this graph. There is much more spread under 0 compared to the spread over 0. Also note that the correlation coefficient is 0.08, which is significanly lower than Amazon's 0.27.
+
+####   Analysis 
+>The correlation between number of stars and number of reviews is much stronger in products where Amazon was ranked higher than non-Amazon products. This suggests that there is a stronger relationship between number of reviews and quality of Amazon products compared to non-Amazon products.
 
 ## Methods
 We conduct two hypothesis tests: the first one is that Amazon products are on average placed higher than third-party products, and the second is that Amazon partner products are on average placed higher than third-party products. With these hypothesis tests on the differences in means, we can present our numerical results as an answer to whether Amazon and partner products are placed higher than third-party products. We will then run summary statistics on stars and reviews comparing the same groups to see if our mean positions are justified, i.e. a product with a higher star rating and more reviews is placed higher than the rest. 
