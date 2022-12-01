@@ -410,7 +410,7 @@ After running our methods on the dataset, we hope to achieve an answer as to how
 
 3. How do Amazon's products compare to those marketed by non-Amazon retailers?
 
-Based on our question 2 which suggested that Amazon does not market their products higher based on quality, we had hypothesized  
+Based on Question 2 which suggested that Amazon does not market their products higher based on quality and Question 1 which suggested that Amazon markets their general products higher than specific ones, we had hypothesized that Amazon products were only placed higher to get more foot traffic and would not hold up in quality when compared to non-Amazon retailers. However, when we ran our hypothesis tests comparing the mean placement of Amazon vs Third Party, we found strong similarity between the two. This disproves our hypothesis, instead suggesting that there are other factors at play that determine the placement of Amazon products on their website. 
 
 
 
