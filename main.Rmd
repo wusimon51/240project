@@ -130,11 +130,13 @@ Considering the lower ~ 16% of the values, we come to a value of 3, which would 
 >We answer this by comparing general and specific search queries average position using boxplots between Amazon and partner products.
 
 ```{r, echo=FALSE}
+
+#creates DF with only secific products
 specific_search = amazon %>% 
   filter(is_general == "no") %>% 
   select(amazon, partner)
 
-
+#pivot data to make box plots possible
 specific_search = specific_search %>% 
   pivot_longer(cols=1:2, names_to = "product_type", values_to = "position")
 
@@ -144,11 +146,12 @@ ggplot(specific_search, aes(x=product_type, y=position)) +
   xlab("Product Type") +
   ylab("Position")
 
+#creates DF with only general products
 general_search = amazon %>% 
   filter(is_general == "yes") %>% 
   select(amazon, partner)
 
-
+#pivot data to make box plots possible
 general_search = general_search %>% 
   pivot_longer(cols=1:2, names_to = "product_type", values_to = "position")
 
@@ -437,6 +440,7 @@ After running our methods on the dataset, we hope to achieve an answer as to how
 ## Conclusion
 
 >What this data shows, how it compares to other studies, what that all means. Answer our leading question(s)
+
 
 ## Sources:
 - https://medium.com/@Shoemaker703/how-does-amazon-select-the-top-product-in-its-search-results-and-why-is-it-usually-one-of-amazons-662d122591d0
