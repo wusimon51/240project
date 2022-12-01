@@ -10,6 +10,19 @@ source("viridis.R")
 source("ggprob.R")
 ```
 
+
+```{r}
+# inputs - original data (File size is huge) 
+# fn_search = 'searches.csv.xz'
+# fn_products = 'products.csv.xz'
+# fn_amazon = 'amazon_private_label.csv.xz'
+# 
+# search = read_csv(fn_search)
+# products = read_csv(fn_products)
+# amazon_label = read_csv(fn_amazon)
+```
+
+
 ```{r, include=FALSE}
 amazon = read_csv("dataset.csv") %>%
     drop_na() %>%
@@ -37,20 +50,51 @@ Using this data, we came up with a research question to help us explore the simi
 
 ## Data
 This data includes three main categories relating to the Amazon search queries—position on the results page, Amazon stars, and Amazon review count. These 3 categories were made for each group: Amazon products, partners of Amazon, and products that are independent from Amazon. Amazon stars are rated on a scale of 0 to 5—as products score approaches 5 they are considered a better product. For position on Amazon, the highest possible place would be 1.0. As products approach 1.0, they are considered to be of more relevance to the search query. As the number of reviews increases, the item is reflected to increase in popularity and frequency. If there is a high number of reviews and a high star rating, that would indicate that the product is high-quality and tested out by many consumers. 
+### Preliminary Studies
+- Not showing what we want to see, check it out
+```{r}
+# Summarizing Star and Reviews averages
+summary = amazon %>% 
+  select(-search_term) %>% 
+  summarize(amazon = mean(amazon_stars),
+            partner = mean(partner_stars),
+            third_party = mean(third_party_stars))
+
+summary1 = amazon %>% 
+  select(-search_term) %>% 
+  summarize(amazon = mean(amazon_reviews),
+            partner = mean(partner_reviews),
+            third_party = mean(third_party_reviews))
+
+prop_third_party = amazon %>% 
+  filter(third_party_stars < partner_stars & third_party_stars < amazon_stars)
+
+prop_partner= amazon %>% 
+  filter(partner_stars < third_party_stars & partner_stars < amazon_stars)
+
+prop_amazon = amazon %>% 
+  filter(amazon_stars < partner_stars & amazon_stars < third_party_stars)
+
+tibble(
+  prop_amazon = nrow(prop_amazon) / nrow(amazon),
+  prop_third = nrow(prop_third_party) / nrow(amazon),
+  prop_partner = nrow(prop_partner) / nrow(amazon)
+)
+```
 
 ### Question 1
-- For Amazon and non-Amazon (partner) products that ranked in top 10 search, what is the distribution of review amounts? 
+- For Amazon and non-Amazon (partner) products that ranked in top 10 search, what is the distribution of review and star amounts? 
 ```{r}
 # Filter data
 amazon_10 = amazon %>% 
   filter(amazon <= 10) %>% 
-  pull(amazon_reviews)
+  pull(amazon_stars)
 
 # Note that this has more data points than amazon products
 # Take sample of matching length to first one
 non_amazon_10 = amazon %>% 
-  filter(partner <= 10) %>% 
-  pull(partner_reviews)
+  filter(third_party <= 10) %>% 
+  pull(third_party_stars)
 
 # Merge data
 stars = data.frame(
@@ -62,13 +106,16 @@ stars = data.frame(
 stars = stars %>% 
   pivot_longer(cols = 1:2, names_to ="product_type", values_to = "stars")
 
+# Get averages
+
 # Box Plot - also removing outliers
-ggplot(stars, aes(x = product_type, y = stars)) +
-  geom_boxplot(outlier.shape = NA) +
-  coord_cartesian(ylim=c(0, 20000)) +
+ggplot(stars, aes(x = stars)) +
+  geom_histogram(outlier.shape = NA) +
+  #coord_cartesian(ylim=c(0, 20000)) +
   ggtitle("Amazon vs Third-Party Stars") +
   xlab("Product Type") +
-  ylab("Stars")
+  ylab("Stars") +
+  facet_wrap(vars(product_type))
 
 # Use a side by side box plot to showcase this
 ```
@@ -82,16 +129,27 @@ amazon %>%
     ggtitle("Distribution of Positions for Amazon Products") +
     xlab("Position on Amazon") +
     ylab("Frequency")
+
+
 ```
+
+### Question 3
+- What is the difference in correlation for stars and reviews in amazon and non-amazon products?
+```{r}
+
+```
+
 
 ## Methods
 We conduct two hypothesis tests: the first one is that Amazon products are on average placed higher than third-party products, and the second is that Amazon partner products are on average placed higher than third-party products. With these hypothesis tests on the differences in means, we can present our numerical results as an answer to whether Amazon and partner products are placed higher than third-party products. We will then run summary statistics on stars and reviews comparing the same groups to see if our mean positions are justified, i.e. a product with a higher star rating and more reviews is placed higher than the rest. 
 
-### Question 3
+### Question 4
 - Hypothesis Test: Are Amazon products on average placed higher than those from 
 third-party sellers?
 
-```{r}
+>We will answer this question by performing a series of mutations on our data in order to calculate two distinct values. First, we will find the difference in values between these two groups, and use these values to search for the true mean between them. In order to do that, we will construct a 95% confidence interval of where we think the true mean resides. Finally, we will calculate a t-statistic and use this to calculate a p-value to show how probable our hypothesized mean is compared to the true mean. For both tests, in order to test if one group is higher than the other, we will first need to test if both groups are similar. To test similarity, we will predict a mean of 0. If 0 is within the 95% confidence interval, we can assume that there is a probable chance it is the true mean. This is similar to our p-value. If the p-value is over 0.05, we can assume that there is a statistically significant chance that our predicted value could be the true mean. 
+
+```{r, include = FALSE}
 #Used pivot_longer to put name of retailer in its own column
 amazon_longer = amazon %>% 
   select(amazon, partner, third_party) %>% 
@@ -103,7 +161,25 @@ amazon_longer %>%
   summarize(n = n(), mean = mean(position), sd = sd(position))
 ```
 
-```{r}
+Model 
+$$
+X \ | \ p = Normal(2327, p)
+$$
+Hypothesis test
+$$
+H_0 : p = .5     \\
+H_a : p \ne .5
+$$
+Our test statistic is X
+
+If the null hypothesis is true, then:
+$$ 
+X \sim Normal(2327, .5)
+$$
+
+>After our calculations, we have constructed a confidence interval for the mean of our two groups:
+
+```{r, echo=FALSE}
 #Code modified from lizard examples in class to calculate 95% confidence interval of
 #Amazon compared to third party
 #Note that 0 is within the interval, which supports the null hypothesis
@@ -112,7 +188,8 @@ amazon_sum = amazon %>%
   summarize(n = n(),
             mean = mean(diff),
             sd = sd(diff),
-            r = cor(amazon, third_party))
+            r = cor(amazon, third_party),
+            t = mean/(sd/sqrt(n)))
 
 ci_calc = amazon_sum %>% 
   mutate(se = sd/sqrt(n), 
@@ -127,10 +204,45 @@ ci = ci_calc %>%
 ci
 ```
 
-### Question 4
+>We are 95% confident that the average difference in position between amazon products and third party products is between -0.366 and 1.45. Note that this includes 0, which provides evidence supporting the null hypothesis that the two sets of products are similar. 
+
+>Next, we calculate the p-value: 
+
+```{r, echo=FALSE}
+pvalue = 2*pt(-abs(amazon_sum$t), amazon_sum$n-1)
+pvalue
+```
+
+>There is a good chance (p = .24) that the mean difference in position between amazon products and third party products is 0. 
+
+### Question 5
 - Hypothesis Test: Are Amazon partner products on average placed higher than 
 those from third-party sellers?
-```{r}
+
+>We will then repeat our hypothesis test for comparing Third Party products vs Partner products.
+
+Model 
+$$
+X \ | \ p = Normal(2327, p)
+$$
+
+
+Hypothesis test
+$$
+H_0 : p = .5     \\
+H_a : p \ne .5
+$$
+Our test statistic is X
+
+If the null hypothesis is true, then:
+
+$$ 
+X \sim Normal(2327, .5)
+$$
+
+>Same as last time, we now construct a confidence interval for the mean of our two groups. 
+
+```{r, echo = FALSE}
 #Repeated process with Third Party vs Partner
 #Note that confidence interval is 14.0-15.2, which does not include 0
 #This data rejects the null hypothesis
@@ -139,7 +251,8 @@ amazon_sum2 = amazon %>%
   summarize(n = n(),
             mean = mean(diff),
             sd = sd(diff),
-            r = cor(partner, third_party))
+            r = cor(partner, third_party),
+            t = mean/(sd/sqrt(n)))
 
 ci_calc = amazon_sum2 %>% 
   mutate(se = sd/sqrt(n), 
@@ -153,6 +266,15 @@ ci = ci_calc %>%
 
 ci
 ```
+>We are 95% confident that the mean difference between third party products and partner products is between 14.0 and 15.2. Note that 0 is not within our confidence interval, as opposed to the previous hypothesis test. This, on the other hand, provides evidence contrary to the null hypothesis, which would then suggest that the two sets of products are not similar. 
+
+>And again, we calculate our p value to test how probable our hypothesized mean of 0 is when compared to the mean of our dataset. 
+```{r, echo=FALSE}
+pvalue = 2*pt(-abs(amazon_sum2$t), amazon_sum2$n-1)
+pvalue
+```
+>(Note that the calulated value was so small, our computer was forced to round to 0)
+>We are almost certain (p≈0) that the mean difference between third party products and partner products is not 0. 
 
 ## Discussion
 After running our methods on the dataset, we hope to achieve an answer as to how Amazon creates its search results, whether it places products from itself and its partners above products from third-party sellers. This is done after taking stars and review counts into consideration. The implications of this could be that Amazon manipulates its search results, where it favors third-party products the least despite having better stars and more reviews.
