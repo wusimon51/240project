@@ -11,19 +11,6 @@ source("viridis.R")
 source("ggprob.R")
 ```
 
-
-```{r}
-# inputs - original data (File size is huge) 
-# fn_search = 'searches.csv.xz'
-# fn_products = 'products.csv.xz'
-# fn_amazon = 'amazon_private_label.csv.xz'
-# 
-# search = read_csv(fn_search)
-# products = read_csv(fn_products)
-# amazon_label = read_csv(fn_amazon)
-```
-
-
 ```{r, include=FALSE}
 amazon = read_csv("dataset.csv") %>%
     drop_na() %>%
