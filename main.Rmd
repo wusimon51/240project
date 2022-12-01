@@ -40,13 +40,12 @@ The actual data retrieval was done on January 21st, 2021 from a single location,
 
 Given the author's standards regarding amazon brands, the data collected was narrowed to 3,492 different queries and accumulated different information based on each query. We are interested in this data because it relates Amazon products and their quality to those of Amazon partners and independent retailers.
 
-Using this data, we came up with a research question to help us explore the characteristics that define an amazon search. Does what you search matter in terms of product ranking? Can we assume the type of search by simply looking at the product's ranking, stars and reviews on Amazon? 
+Using this data, we came up with three research questions to help us explore the characteristics that define an amazon search. Does what you search matter in terms of product ranking? Can we assume the type of search by simply looking at the product's ranking, stars and reviews on Amazon? How do Amazon's products compare to those marketed by non-Amazon retailers?
 
 ## Data
 This data includes three main categories relating to the Amazon search queries—position on the results page, Amazon stars, and Amazon review count. These 3 categories were made for each group: Amazon products, partners of Amazon, and products that are independent from Amazon. Amazon stars are rated on a scale of 0 to 5—as products score approaches 5 they are considered a better product. For position on Amazon, the highest possible place would be 1.0. As products approach 1.0, they are considered to be of more relevance to the search query. As the number of reviews increases, the item is reflected to increase in popularity and frequency. If there is a high number of reviews and a high star rating, that would indicate that the product is high-quality and tested out by many consumers. 
 
-### Preliminary Studies
-- Not showing what we want to see, check it out
+
 ```{r, include = F}
 # Summarizing Star and Reviews averages
 summary = amazon %>% 
@@ -436,6 +435,17 @@ After running our methods on the dataset, we hope to achieve an answer as to how
 ## Conclusion
 
 >What this data shows, how it compares to other studies, what that all means. Answer our leading question(s)
+
+
+1. Does what you search matter in terms of product ranking? 
+
+2. Can we assume the type of search by simply looking at the product's ranking, stars and reviews on Amazon? 
+
+3. How do Amazon's products compare to those marketed by non-Amazon retailers?
+
+Based on our question 2 which suggested that Amazon does not market their products higher based on quality, we had hypothesized  
+
+
 
 ## Sources:
 - https://medium.com/@Shoemaker703/how-does-amazon-select-the-top-product-in-its-search-results-and-why-is-it-usually-one-of-amazons-662d122591d0
