@@ -104,7 +104,7 @@ sd(study_non_amazon)
 
 >We answer this by comparing general and specific search queries average position using boxplots between Amazon and partner products.
 
-```{r}
+```{r, echo=FALSE}
 specific_search = amazon %>% 
   filter(is_general == "no") %>% 
   select(amazon, partner)
@@ -115,8 +115,9 @@ specific_search = specific_search %>%
 
 ggplot(specific_search, aes(x=product_type, y=position)) +
   geom_boxplot() +
-  ylim(0, 20) +
-  ggtitle("Position Average for Specific Products")
+  ggtitle("Position Average for Specific Products") +
+  xlab("Product Type") +
+  ylab("Position")
 
 general_search = amazon %>% 
   filter(is_general == "yes") %>% 
@@ -129,13 +130,14 @@ general_search = general_search %>%
 
 ggplot(general_search, aes(x=product_type, y=position)) +
   geom_boxplot() +
-  ylim(0, 20) +
-  ggtitle("Position Average for General Products")
+  ggtitle("Position Average for General Products") +
+  xlab("Product Type") +
+  ylab("Position")
 
 
 ```
 
->These boxplots compare positions for Amazon and partner products between general and specific search queries. The boxplots reveal that for general queries, Amazon typically has its own brand for general products and will rank it high; however, there are many partnering products that come up right behind it therefore the means are similar hovering around 1 and 3. As for specific searches, Amazon typically does not have its own brand, causing the average to dip around 19 whereas partner products average remains high around 2. This concludes that for general products, Amazon tends to have a product for that and consequently position itself much higher; however, for specific products Amazon typcially lacks its own version and will position itself significantly lower.
+>These boxplots compare positions for Amazon and partner products between general and specific search queries. The boxplots reveal that for general queries, Amazon typically has its own brand for general products and will rank it high; however, there are many partnering products that come up right behind it therefore the means are similar hovering around 1 and 3. As for specific searches, Amazon typically does not have its own brand, causing the average to dip around 19 whereas partner products average remains high around 2. This concludes that for general products, Amazon tends to consequently position itself much higher; however, for specific products Amazon typcially lacks its own version and will position itself significantly lower.
 
 ### Question 1
 - For Amazon and non-Amazon (partner) products that ranked in top 10 search, what is the distribution of review and star amounts? 
