@@ -110,7 +110,7 @@ The framework behind Amazon allows Amazon and other parties to sell products. We
 
 We will use the Amazon product positions to find a value suggesting that having a position at that value or lower, suggests that Amazon has its own product, which is why it is shown so high in the ranking.
 
-```{r}
+```{r, echo = F}
 threshold = amazon %>% 
   pull(amazon)
 
@@ -121,7 +121,7 @@ sigma = sd(threshold)
 pnorm(3, mean = mu, sd = sigma)
 ```
 
-Considering the lower ~ 16% of the values, we come to a value of 3, which would say that a large majority of amazon products (84%) are positioned greater than 3. We end up using 3 as the threshold since it captures a realistic percentage of amazon products that are general.
+Considering the lower ~ 16% of the values, we come to a value of 3, which would say that a large majority of amazon products (84%) are positioned greater than 3. We end up using 3 as the threshold since it captures a realistic percentage of amazon products that are general. Any products placed with a value of 3 or lower are considered General Products, while all others are considered Specific Products. 
 
 
 ### Question 1
@@ -172,7 +172,7 @@ ggplot(general_search, aes(x=product_type, y=position)) +
 - What is the distribution of positions for Amazon products in search results?
 
 We answer this by generating a graph of all amazon products and the frequency of their position on the website. 
-```{r}
+```{r, echo = F}
 amazon %>%
     ggplot(aes(x=amazon)) +
     geom_bar() +
