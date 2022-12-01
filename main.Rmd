@@ -46,7 +46,7 @@ This data includes three main categories relating to the Amazon search queriesâ€
 
 ### Preliminary Studies
 - Not showing what we want to see, check it out
-```{r}
+```{r, include = F}
 # Summarizing Star and Reviews averages
 summary = amazon %>% 
   select(-search_term) %>% 
@@ -141,18 +141,18 @@ ggplot(stars, aes(x = stars)) +
 
 ### Question 2
 - What is the distribution of positions for Amazon products in search results?
+
+We answer this by generating a graph of all amazon products and the frequency of their position on the website. 
 ```{r}
 amazon %>%
     ggplot(aes(x=amazon)) +
     geom_bar() +
     ggtitle("Distribution of Positions for Amazon Products") +
     xlab("Position on Amazon") +
-    ylab("Frequency")
-
-
+    ylab("Frequency") 
 ```
 
->DESCRIBE AND INTERPRET GRAPH HERE
+>Note that the tall bar ONLY accounts for situations in which Amazon's product is #1. While this may be reminicient of their product quality, it is not reflected in a general downward trend as the position increases. Instead, after position 1, the frequency is not consistant until a dropoff after 40.  This could suggest that Amazon does not place their items at #1 because they have the best quality, but rather that they want more viewer traffic over their products. 
 
 
 ### Question 3
@@ -175,7 +175,11 @@ ggplot(amazon_first) + #Residual plot with reviews on x, residuals on y
   aes(amazon_reviews, resid) + 
   geom_point() +
   scale_x_log10()+ 
-  geom_hline(yintercept = 0, color = 'red', linetype = 'dashed')
+  geom_hline(yintercept = 0, color = 'red', linetype = 'dashed') +
+  xlab("Number of Reviews")+
+  ylab("Residuals") +
+  ggtitle("Residual Plot of Amazon Reviews", 
+          subtitle = "Where Amazon had the First Product")
 
 correlation1 = cor(amazon_first$amazon_stars, amazon_first$amazon_reviews)
 correlation1
@@ -199,7 +203,11 @@ ggplot(non_amazon_first) +
   aes(partner_reviews, resid) + 
   geom_point() +
   scale_x_log10() + 
-  geom_hline(yintercept = 0, color = 'red', linetype = 'dashed')
+  geom_hline(yintercept = 0, color = 'red', linetype = 'dashed') +
+  xlab("Number of Reviews")+
+  ylab("Residuals") +
+  ggtitle("Residual Plot of Non-Amazon Reviews", 
+          subtitle = "Where Non-Amazon Sellers had the First Product")
 
 correlation2 = cor(non_amazon_first$partner_stars, non_amazon_first$partner_reviews)
 correlation2
