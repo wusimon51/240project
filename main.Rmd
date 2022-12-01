@@ -51,6 +51,7 @@ Using this data, we came up with a research question to help us explore the simi
 
 ## Data
 This data includes three main categories relating to the Amazon search queries—position on the results page, Amazon stars, and Amazon review count. These 3 categories were made for each group: Amazon products, partners of Amazon, and products that are independent from Amazon. Amazon stars are rated on a scale of 0 to 5—as products score approaches 5 they are considered a better product. For position on Amazon, the highest possible place would be 1.0. As products approach 1.0, they are considered to be of more relevance to the search query. As the number of reviews increases, the item is reflected to increase in popularity and frequency. If there is a high number of reviews and a high star rating, that would indicate that the product is high-quality and tested out by many consumers. 
+
 ### Preliminary Studies
 - Not showing what we want to see, check it out
 ```{r}
@@ -167,11 +168,22 @@ amazon %>%
 >We first filter products in which Amazon's position on the website is higher than the other two. Comparing stars to reviews, we generate a linear relationship between the two and graph the residuals based on our line of best fit. After that, we calculate the correlation coefficient relating our two variables. 
 
 ```{r, echo = F}
-amazon_first = amazon %>% filter(amazon < partner) %>% select(starts_with('amazon'))
-amazon_lm = lm(amazon_stars ~ amazon_reviews, data = amazon_first)
-amazon_first = amazon_first %>% add_residuals(amazon_lm)
-ggplot(amazon_first) + aes(amazon_reviews, resid) + geom_point() +
-  scale_x_log10()+ geom_hline(yintercept = 0, color = 'red', linetype = 'dashed')
+amazon_first = amazon %>% #select products in which Amazon comes first
+  filter(amazon < partner) %>% 
+  select(starts_with('amazon')) 
+
+amazon_lm = lm(amazon_stars ~ amazon_reviews, data = amazon_first) 
+#Correlation between stars and reviews
+
+amazon_first = amazon_first %>% 
+  add_residuals(amazon_lm)
+
+ggplot(amazon_first) + #Residual plot with reviews on x, residuals on y
+  aes(amazon_reviews, resid) + 
+  geom_point() +
+  scale_x_log10()+ 
+  geom_hline(yintercept = 0, color = 'red', linetype = 'dashed')
+
 correlation1 = cor(amazon_first$amazon_stars, amazon_first$amazon_reviews)
 correlation1
 ```
@@ -181,11 +193,21 @@ correlation1
 >Next, we do the same thing as before, but instead we look at products in which Amazon didn't come first. 
 
 ```{r, echo = F}
-non_amazon_first = amazon %>% filter(partner < amazon) %>% select(starts_with('partner'))
+non_amazon_first = amazon %>% #Same as previous, but with non-amazon products (partner)
+  filter(partner < amazon) %>% 
+  select(starts_with('partner'))
+
 non_amazon_lm = lm(partner_stars ~ partner_reviews, data = non_amazon_first)
-non_amazon_first = non_amazon_first %>% add_residuals(non_amazon_lm)
-ggplot(non_amazon_first) + aes(partner_reviews, resid) + geom_point()+
-  scale_x_log10() + geom_hline(yintercept = 0, color = 'red', linetype = 'dashed')
+
+non_amazon_first = non_amazon_first %>% 
+  add_residuals(non_amazon_lm)
+
+ggplot(non_amazon_first) + 
+  aes(partner_reviews, resid) + 
+  geom_point() +
+  scale_x_log10() + 
+  geom_hline(yintercept = 0, color = 'red', linetype = 'dashed')
+
 correlation2 = cor(non_amazon_first$partner_stars, non_amazon_first$partner_reviews)
 correlation2
 ```
@@ -265,6 +287,7 @@ ci
 >Next, we calculate the p-value: 
 
 ```{r, echo=FALSE}
+#Calculate two sided p-value
 pvalue = 2*pt(-abs(amazon_sum$t), amazon_sum$n-1)
 pvalue
 ```
@@ -329,8 +352,10 @@ pvalue = 2*pt(-abs(amazon_sum2$t), amazon_sum2$n-1)
 pvalue
 ```
 
->(Note that the calulated value was so small, our computer was forced to round to 0)
->We are almost certain (p≈0) that the mean difference between third party products and partner products is not 0. 
+>(Note that the calulated value was so small, our computer was forced to round to 0) Because of this, we are almost certain (p≈0) that the mean difference between third party products and partner products is not 0. 
+
+## Analysis of Hypothesis Tests
+According to our data, Amazon and its partners do not share any privileges of being placed higher on the website. There is strong evidence that they are equal in placement. Third-party products, however, do not share this privilege. They are on average placed way lower on the website than Amazon products, and there is very strong evidence to suggest that they are not equal. 
 
 ## Discussion
 After running our methods on the dataset, we hope to achieve an answer as to how Amazon creates its search results, whether it places products from itself and its partners above products from third-party sellers. This is done after taking stars and review counts into consideration. The implications of this could be that Amazon manipulates its search results, where it favors third-party products the least despite having better stars and more reviews.
@@ -338,7 +363,7 @@ After running our methods on the dataset, we hope to achieve an answer as to how
 ## Limitations of our Study
 
 >Possible talking points: Limitations of data, other studies, sample size, manipulation of reviews/stars now shown in data
->
+
 
 ## Conclusion
 
