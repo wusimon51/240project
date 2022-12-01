@@ -40,7 +40,7 @@ The actual data retrieval was done on January 21st, 2021 from a single location,
 
 Given the author's standards regarding amazon brands, the data collected was narrowed to 3,492 different queries and accumulated different information based on each query. We are interested in this data because it relates Amazon products and their quality to those of Amazon partners and independent retailers.
 
-Using this data, we came up with a research question to help us explore the similarities and differences between these groups: How do products from Amazon compare to similar products from either partners of Amazon or independent sellers in terms of reviews, quality, and position on the website?
+Using this data, we came up with a research question to help us explore the characteristics that define an amazon search. Does what you search matter in terms of product ranking? Can we assume the type of search by simply looking at the product's ranking, stars and reviews on Amazon? 
 
 ## Data
 This data includes three main categories relating to the Amazon search queries—position on the results page, Amazon stars, and Amazon review count. These 3 categories were made for each group: Amazon products, partners of Amazon, and products that are independent from Amazon. Amazon stars are rated on a scale of 0 to 5—as products score approaches 5 they are considered a better product. For position on Amazon, the highest possible place would be 1.0. As products approach 1.0, they are considered to be of more relevance to the search query. As the number of reviews increases, the item is reflected to increase in popularity and frequency. If there is a high number of reviews and a high star rating, that would indicate that the product is high-quality and tested out by many consumers. 
@@ -98,7 +98,31 @@ mean(study_non_amazon)
 sd(study_non_amazon)
 ```
 
-- Setting threshold at n = 3, meaning if a amazon product shows up in the first 3 results, we can consider it a general product, and if n > 3, then the product can be considered specific.
+### Chapter 1 - Finding a threshold
+It would be a very time consuming task to try and predict the characteristics of a product through the search term, since there are limitless possibilities for what you could search. In our study, we instead looked at the data that each product provided, to see whether we can characterize the product that way.
+
+Upon inspection of the dataset, we notice that the vast majority of product names are split between two categories. More specific search terms like "13 inch cube storage bins" and more general search terms like "alcohol 70%". (how can u assume this when you don't have search volume data).
+
+But how do we differentiate between these two?
+
+We would need some threshold value for the positioning of products to decide what makes a product more general or specific.
+
+The framework behind Amazon allows Amazon and other parties to sell products. We understand that Amazon is unable to create every possible product on earth because they are a single company. On Amazon, there are approximately 12 million Amazon products and 353 million classified as third party. So, a majority of products are not Amazon, and it would make sense that for those products that are there, they would satisfy more general search terms, for a larger audience. There is always the case that a super specific search term has an associated Amazon product.
+
+We will use the Amazon product positions to find a value suggesting that having a position at that value or lower, suggests that Amazon has its own product, which is why it is shown so high in the ranking.
+
+```{r}
+threshold = amazon %>% 
+  pull(amazon)
+
+mu = mean(threshold)
+sigma = sd(threshold)
+
+
+pnorm(3, mean = mu, sd = sigma)
+```
+
+
 
 ### How do General and Specific Search Terms Position Averages Vary?
 
