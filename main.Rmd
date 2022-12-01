@@ -121,6 +121,7 @@ sigma = sd(threshold)
 pnorm(3, mean = mu, sd = sigma)
 ```
 
+Considering the lower ~ 16% of the values, we come to a value of 3, which would say that a large majority of amazon products (84%) are positioned greater than 3. We end up using 3 as the threshold since it captures a realistic percentage of amazon products that are general.
 
 
 ### How do General and Specific Search Terms Position Averages Vary?
@@ -128,11 +129,13 @@ pnorm(3, mean = mu, sd = sigma)
 >We answer this by comparing general and specific search queries average position using boxplots between Amazon and partner products.
 
 ```{r, echo=FALSE}
+
+#creates DF with only secific products
 specific_search = amazon %>% 
   filter(is_general == "no") %>% 
   select(amazon, partner)
 
-
+#pivot data to make box plots possible
 specific_search = specific_search %>% 
   pivot_longer(cols=1:2, names_to = "product_type", values_to = "position")
 
@@ -142,11 +145,12 @@ ggplot(specific_search, aes(x=product_type, y=position)) +
   xlab("Product Type") +
   ylab("Position")
 
+#creates DF with only general products
 general_search = amazon %>% 
   filter(is_general == "yes") %>% 
   select(amazon, partner)
 
-
+#pivot data to make box plots possible
 general_search = general_search %>% 
   pivot_longer(cols=1:2, names_to = "product_type", values_to = "position")
 
@@ -437,6 +441,7 @@ After running our methods on the dataset, we hope to achieve an answer as to how
 >What this data shows, how it compares to other studies, what that all means. Answer our leading question(s)
 
 
+
 1. Does what you search matter in terms of product ranking? 
 
 2. Can we assume the type of search by simply looking at the product's ranking, stars and reviews on Amazon? 
@@ -447,7 +452,10 @@ Based on our question 2 which suggested that Amazon does not market their produc
 
 
 
+
 ## Sources:
 - https://medium.com/@Shoemaker703/how-does-amazon-select-the-top-product-in-its-search-results-and-why-is-it-usually-one-of-amazons-662d122591d0
 
 - https://github.com/the-markup/investigation-amazon-brands
+
+- https://landingcube.com/amazon-statistics/
