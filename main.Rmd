@@ -32,6 +32,7 @@ amazon
 
 # What Characterizes a Products Placement on Amazon?
 
+
 ## Introduction
 Our dataset is a subset of search queries on Amazon from a GitHub repository created by The Markup on October 14, 2021.
 
@@ -98,6 +99,41 @@ sd(study_non_amazon)
 ```
 
 - Setting threshold at n = 3, meaning if a amazon product shows up in the first 3 results, we can consider it a general product, and if n > 3, then the product can be considered specific.
+
+### How do General and Specific Search Terms Position Averages Vary?
+
+```{r}
+specific_search = amazon %>% 
+  filter(is_general == "no") %>% 
+  select(amazon, partner)
+
+
+specific_search = specific_search %>% 
+  pivot_longer(cols=1:2, names_to = "product_type", values_to = "position")
+
+ggplot(specific_search, aes(x=product_type, y=position)) +
+  geom_boxplot() +
+  ylim(0, 20) +
+  ggtitle("Position Average for Specific Products")
+
+general_search = amazon %>% 
+  filter(is_general == "yes") %>% 
+  select(amazon, partner)
+
+
+general_search = general_search %>% 
+  pivot_longer(cols=1:2, names_to = "product_type", values_to = "position")
+
+
+ggplot(general_search, aes(x=product_type, y=position)) +
+  geom_boxplot() +
+  ylim(0, 20) +
+  ggtitle("Position Average for General Products")
+
+
+```
+
+
 
 ### Question 1
 - For Amazon and non-Amazon (partner) products that ranked in top 10 search, what is the distribution of review and star amounts? 
@@ -211,37 +247,6 @@ correlation2
 >The correlation between number of stars and number of reviews is much stronger in products where Amazon was ranked higher than non-Amazon products. This suggests that there is a stronger relationship between number of reviews and quality of Amazon products compared to non-Amazon products.
 
 
-
-```{r}
-specific_search = amazon %>% 
-  filter(is_general == "no") %>% 
-  select(amazon, partner)
-
-
-specific_search = specific_search %>% 
-  pivot_longer(cols=1:2, names_to = "product_type", values_to = "position")
-
-ggplot(specific_search, aes(x=product_type, y=position)) +
-  geom_boxplot() +
-  ylim(0, 60) +
-  ggtitle("Position Average for Specific Products")
-
-general_search = amazon %>% 
-  filter(is_general == "yes") %>% 
-  select(amazon, partner)
-
-
-general_search = general_search %>% 
-  pivot_longer(cols=1:2, names_to = "product_type", values_to = "position")
-
-
-ggplot(general_search, aes(x=product_type, y=position)) +
-  geom_boxplot() +
-  ylim(0, 60) +
-  ggtitle("Position Average for General Products")
-
-
-```
 
 
 ## Methods
