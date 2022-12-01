@@ -120,6 +120,8 @@ ggplot(stars, aes(x = stars)) +
 # Use a side by side box plot to showcase this
 ```
 
+>DESCRIBE AND INTERPRET GRAPH(S) HERE
+
 ### Question 2
 - What is the distribution of positions for Amazon products in search results?
 ```{r}
@@ -132,10 +134,15 @@ amazon %>%
 
 ```
 
+>DESCRIBE AND INTERPRET GRAPH HERE
+
+
 ### Question 3
 - What is the difference in correlation for stars and reviews in amazon and non-amazon products?
 ```{r}
-
+#Graph both side by side (pivot longer?) and use cor(x,y)
+#or residual graph? That may be better (look to hw 10 q 5)
+#Using cor(x,y), find difference between them and interpret what difference means
 ```
 
 
@@ -162,18 +169,19 @@ amazon_longer %>%
 
 Model 
 $$
-X \ | \ p = Normal(2327, p)
+X_i \ \sim \ F_1(\mu_1, \sigma_1), i = 1, ..., n_1 \\
+Y_i \ \sim \ F_2(\mu_2, \sigma_2), i = 1, ..., n_2
 $$
 Hypothesis test
 $$
-H_0 : p = .5     \\
-H_a : p \ne .5
+H_0 : \mu_1 = \mu_2     \\
+H_a : \mu_1 \ne \mu_2
 $$
-Our test statistic is X
+Our test statistic is T
 
 If the null hypothesis is true, then:
 $$ 
-X \sim Normal(2327, .5)
+X_i = Y_i
 $$
 
 >After our calculations, we have constructed a confidence interval for the mean of our two groups:
@@ -222,21 +230,19 @@ those from third-party sellers?
 
 Model 
 $$
-X \ | \ p = Normal(2327, p)
+X_i \ \sim \ F_1(\mu_1, \sigma_1), i = 1, ..., n_1 \\
+Y_i \ \sim \ F_2(\mu_2, \sigma_2), i = 1, ..., n_2
 $$
-
-
 Hypothesis test
 $$
-H_0 : p = .5     \\
-H_a : p \ne .5
+H_0 : \mu_1 = \mu_2     \\
+H_a : \mu_1 \ne \mu_2
 $$
-Our test statistic is X
+Our test statistic is T
 
 If the null hypothesis is true, then:
-
 $$ 
-X \sim Normal(2327, .5)
+X_i = Y_i
 $$
 
 >Same as last time, we now construct a confidence interval for the mean of our two groups. 
@@ -268,10 +274,12 @@ ci
 >We are 95% confident that the mean difference between third party products and partner products is between 14.0 and 15.2. Note that 0 is not within our confidence interval, as opposed to the previous hypothesis test. This, on the other hand, provides evidence contrary to the null hypothesis, which would then suggest that the two sets of products are not similar. 
 
 >And again, we calculate our p value to test how probable our hypothesized mean of 0 is when compared to the mean of our dataset. 
+
 ```{r, echo=FALSE}
 pvalue = 2*pt(-abs(amazon_sum2$t), amazon_sum2$n-1)
 pvalue
 ```
+
 >(Note that the calulated value was so small, our computer was forced to round to 0)
 >We are almost certain (p≈0) that the mean difference between third party products and partner products is not 0. 
 
@@ -280,7 +288,11 @@ After running our methods on the dataset, we hope to achieve an answer as to how
 
 ## Limitations of our Study
 
+>Possible talking points: Limitations of data, other studies, sample size, manipulation of reviews/stars now shown in data
+
 ## Conclusion
+
+>What this data shows, how it compares to other studies, what that all means. Answer our leading question(s)
 
 ## Sources:
 - https://medium.com/@Shoemaker703/how-does-amazon-select-the-top-product-in-its-search-results-and-why-is-it-usually-one-of-amazons-662d122591d0
