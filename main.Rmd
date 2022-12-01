@@ -35,9 +35,14 @@ amazon = read_csv("dataset.csv") %>%
         third_party_stars = wnon_amazon_stars,
         third_party_reviews = wnon_amazon_reviews
     )
+
+amazon = amazon %>% 
+  mutate(is_general = case_when(amazon <= 3 ~ "yes", amazon > 3 ~ "no"))
+amazon
+
 ```
 
-# Does Amazon Manipulate its Search Results?
+# What Characterizes a Products Placement on Amazon?
 
 ## Introduction
 Our dataset is a subset of search queries on Amazon from a GitHub repository created by The Markup on October 14, 2021.
@@ -144,6 +149,40 @@ amazon %>%
 #Graph both side by side (pivot longer?) and use cor(x,y)
 #or residual graph? That may be better (look to hw 10 q 5)
 #Using cor(x,y), find difference between them and interpret what difference means
+```
+
+
+
+
+```{r}
+specific_search = amazon %>% 
+  filter(is_general == "no") %>% 
+  select(amazon, partner)
+
+
+specific_search = specific_search %>% 
+  pivot_longer(cols=1:2, names_to = "product_type", values_to = "position")
+
+ggplot(specific_search, aes(x=product_type, y=position)) +
+  geom_boxplot() +
+  ylim(0, 60) +
+  ggtitle("Position Average for Specific Products")
+
+general_search = amazon %>% 
+  filter(is_general == "yes") %>% 
+  select(amazon, partner)
+
+
+general_search = general_search %>% 
+  pivot_longer(cols=1:2, names_to = "product_type", values_to = "position")
+
+
+ggplot(general_search, aes(x=product_type, y=position)) +
+  geom_boxplot() +
+  ylim(0, 60) +
+  ggtitle("Position Average for General Products")
+
+
 ```
 
 
