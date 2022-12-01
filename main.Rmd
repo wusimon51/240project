@@ -124,7 +124,8 @@ pnorm(3, mean = mu, sd = sigma)
 Considering the lower ~ 16% of the values, we come to a value of 3, which would say that a large majority of amazon products (84%) are positioned greater than 3. We end up using 3 as the threshold since it captures a realistic percentage of amazon products that are general.
 
 
-### How do General and Specific Search Terms Position Averages Vary?
+### Question 1
+- How do General and Specific Search Terms Position Averages Vary?
 
 >We answer this by comparing general and specific search queries average position using boxplots between Amazon and partner products.
 
@@ -166,45 +167,6 @@ ggplot(general_search, aes(x=product_type, y=position)) +
 
 >These boxplots compare positions for Amazon and partner products between general and specific search queries. The boxplots reveal that for general queries, Amazon typically has its own brand for general products and will rank it high; however, there are many partnering products that come up right behind it therefore the means are similar hovering around 1 and 3. As for specific searches, Amazon typically does not have its own brand, causing the average to dip around 19 whereas partner products average remains high around 2. This concludes that for general products, Amazon tends to consequently position itself much higher; however, for specific products Amazon typcially lacks its own version and will position itself significantly lower.
 
-### Question 1
-- For Amazon and non-Amazon (partner) products that ranked in top 10 search, what is the distribution of review and star amounts? 
-```{r}
-# Filter data
-amazon_10 = amazon %>% 
-  filter(amazon <= 10) %>% 
-  pull(amazon_stars)
-
-# Note that this has more data points than amazon products
-# Take sample of matching length to first one
-non_amazon_10 = amazon %>% 
-  filter(third_party <= 10) %>% 
-  pull(third_party_stars)
-
-# Merge data
-stars = data.frame(
-  "amazon" = amazon_10,
-  "non_amazon" = sample(non_amazon_10, length(amazon_10))
-  
-)
-
-stars = stars %>% 
-  pivot_longer(cols = 1:2, names_to ="product_type", values_to = "stars")
-
-# Get averages
-
-# Box Plot - also removing outliers
-ggplot(stars, aes(x = stars)) +
-  geom_histogram(outlier.shape = NA) +
-  #coord_cartesian(ylim=c(0, 20000)) +
-  ggtitle("Amazon vs Third-Party Stars") +
-  xlab("Product Type") +
-  ylab("Stars") +
-  facet_wrap(vars(product_type))
-
-# Use a side by side box plot to showcase this
-```
-
->DESCRIBE AND INTERPRET GRAPH(S) HERE
 
 ### Question 2
 - What is the distribution of positions for Amazon products in search results?
