@@ -122,6 +122,7 @@ sigma = sd(threshold)
 pnorm(3, mean = mu, sd = sigma)
 ```
 
+Considering the lower ~ 16% of the values, we come to a value of 3, which would say that a large majority of amazon products (84%) are positioned greater than 3. We end up using 3 as the threshold since it captures a realistic percentage of amazon products that are general.
 
 
 ### How do General and Specific Search Terms Position Averages Vary?
@@ -441,3 +442,5 @@ After running our methods on the dataset, we hope to achieve an answer as to how
 - https://medium.com/@Shoemaker703/how-does-amazon-select-the-top-product-in-its-search-results-and-why-is-it-usually-one-of-amazons-662d122591d0
 
 - https://github.com/the-markup/investigation-amazon-brands
+
+- https://landingcube.com/amazon-statistics/
