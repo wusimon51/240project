@@ -49,7 +49,8 @@ Using this data, we came up with three research questions to help us explore the
 - How do Amazon's products compare to those marketed by non-Amazon retailers?
 
 ## Data
-This data includes three main categories relating to the Amazon search queries—position on the results page, Amazon stars, and Amazon review count. These 3 categories were made for each group: Amazon products, partners of Amazon, and products that are independent from Amazon. Amazon stars are rated on a scale of 0 to 5—as products score approaches 5 they are considered a better product. For position on Amazon, the highest possible place would be 1.0. As products approach 1.0, they are considered to be of more relevance to the search query. As the number of reviews increases, the item is reflected to increase in popularity and frequency. If there is a high number of reviews and a high star rating, that would indicate that the product is high-quality and tested out by many consumers. 
+This data includes three main categories relating to the Amazon search queries—position on the results page, Amazon stars, and Amazon review count. 
+For each search query, there is an associated amazon product, non_amazon product and independent product ranking, and associated star rating and review count for each product type. For ranking on Amazon, the highest possible place would be 1.0. As products approach 1.0, they are considered to be of more relevance to the search query. The stars are rated on a scale of 0 to 5, meaning as product score approaches 5, they are considered a better product. As the number of reviews increases, the item is reflected to increase in popularity and frequency. If there is a high number of reviews and a high star rating, that would indicate that the product is high-quality and tested out by many consumers, although there is a caveat to this mentioned in the ***limitations*** section
 
 
 ```{r, include = F}
@@ -104,7 +105,7 @@ sd(study_non_amazon)
 ```
 
 ### Chapter 1 - Finding a threshold
-It would be a very time consuming task to try and predict the characteristics of a product through the search term, since there are limitless possibilities for what you could search. In our study, we instead looked at the data that each product provided, to see whether we can characterize the product that way.
+It would be a very time consuming task to try and predict the characteristics of a product through the search term, since there are limitless possibilities for what you could search. In our study, we instead looked at the data that each search term provided, to see whether we can characterize the product that way.
 
 Upon inspection of the dataset, we notice that the vast majority of product names are split between two categories. More specific search terms like "13 inch cube storage bins" and more general search terms like "alcohol 70%". (how can u assume this when you don't have search volume data).
 
@@ -175,7 +176,7 @@ ggplot(general_search, aes(x=product_type, y=position)) +
 
 
 ### Question 2
-- What is the distribution of positions for Amazon products in search results?
+- What is the distribution of positions for Amazon products compared to Non_Amazon products in search results?
 
 We answer this by generating a graph of all Amazon products and the frequency of their position on the website. 
 ```{r, echo = F}
@@ -185,9 +186,17 @@ amazon %>%
     ggtitle("Distribution of Positions for Amazon Products") +
     xlab("Position on Amazon") +
     ylab("Frequency") 
+
+amazon %>%
+    ggplot(aes(x=partner)) +
+    geom_bar() +
+    ggtitle("Distribution of Positions for Non_Amazon Products") +
+    xlab("Position on Amazon") +
+    ylab("Frequency") 
 ```
 
->Note that the tall bar ONLY accounts for situations in which Amazon's product is #1. While this may be reminicient of their product quality, it is not reflected in a general downward trend as the position increases. Instead, after position 1, the frequency is not consistent until a dropoff after 40.  This could suggest that Amazon does not place their items at #1 because they have the best quality, but rather that they want more viewer traffic over their products. 
+> Connecting to Q1, these two graphs show the contrast in product placement between amazon and non_amazon products. With its own products, amazon tends to place its own products either at a premiere position (1st) or much lower (down to approx. 60th), whereas non_amazon products are always placed in higher positions since third parties can produce more specialized products, also including general.
+> sNote that the tall bar ONLY accounts for situations in which Amazon's product is #1. While this may be reminicient of their product quality, it is not reflected in a general downward trend as the position increases. Instead, after position 1, the frequency is not consistent until a dropoff after 40.  This could suggest that Amazon does not place their items at #1 because they have the best quality, but rather that they want more viewer traffic over their products. 
 
 
 ### Question 3
@@ -251,7 +260,7 @@ correlation2
 - The spread of the residuals in this plot is much worse than the previous one. Note how the dashed line 0 represents the middle of the spread, which is not shown in this graph. There is much more spread under 0 compared to the spread over 0. Also note that the correlation coefficient is 0.08, which is significantly lower than Amazon's 0.27.
 
 ####   Analysis 
->The correlation between number of stars and number of reviews is much stronger in products where Amazon was ranked higher than non-Amazon products. This suggests that there is a stronger relationship between number of reviews and quality of Amazon products compared to non-Amazon products.
+>The correlation between number of stars and number of reviews is much stronger in products where Amazon was ranked higher than non-Amazon products. This suggests that there is a stronger relationship between number of reviews and quality of Amazon products compared to non-Amazon products. For the everyday consumer, this could mean that Amazon products are a more trustworthy brand, at the very least for the general products it offers.
 
 
 
@@ -260,8 +269,7 @@ correlation2
 We conduct two hypothesis tests: the first one is that Amazon products are on average placed higher than third-party products, and the second is that Amazon partner products are on average placed higher than third-party products. With these hypothesis tests on the differences in means, we can present our numerical results as an answer to whether Amazon and partner products are placed higher than third-party products. We will then run summary statistics on stars and reviews comparing the same groups to see if our mean positions are justified, i.e. a product with a higher star rating and more reviews is placed higher than the rest. 
 
 ### Question 4
-- Hypothesis Test: Are Amazon products on average placed higher than those from 
-third-party sellers?
+- Hypothesis Test: Are Amazon products on average placed higher than those from third-party sellers?
 
 >We will answer this question by performing a series of mutations on our data in order to calculate two distinct values. First, we will find the difference in values between these two groups, and use these values to search for the true mean between them. In order to do that, we will construct a 95% confidence interval of where we think the true mean resides. Finally, we will calculate a t-statistic and use this to calculate a p-value to show how probable our hypothesized mean is compared to the true mean. For both tests, in order to test if one group is higher than the other, we will first need to test if both groups are similar. To test similarity, we will predict a mean of 0. If 0 is within the 95% confidence interval, we can assume that there is a probable chance it is the true mean. This is similar to our p-value. If the p-value is over 0.05, we can assume that there is a statistically significant chance that our predicted value could be the true mean. 
 
@@ -287,7 +295,7 @@ $$
 H_0 : \mu_1 = \mu_2     \\
 H_a : \mu_1 \ne \mu_2
 $$
-Our test statistic is T
+Our test statistic is $T$
 
 If the null hypothesis is true, then:
 $$ 
@@ -400,6 +408,14 @@ According to our data, Amazon and its partners do not share any privileges of be
 After running our methods on the dataset, we hope to achieve an answer as to how Amazon creates its search results, whether it places products from itself and its partners above products from third-party sellers. This is done after taking stars and review counts into consideration. The implications of this could be that Amazon manipulates its search results, where it favors third-party products the least despite having better stars and more reviews.
 
 ## Limitations of our Study
+Especially with a project idea like studying Amazon search results, we encountered a lot of limitations in understanding the data. 
+
+Originally we had planned to study whether Amazon places its own products higher on the the site, compared to non_amazon products, but one limitation was that we didn't have search volume data. To retrieve the original data set from the github repo, would have been too big for this project span. Instead, using the subset of search results we had, we decided to change the study to examine how amazon products are defined.
+
+This data was collected in January 21st, 2021, although being recent, we do understand that company frameworks (including Amazon's) change over time, so search results could behave more differently in the present.
+
+Amazon has had its fair share of criticism regarding fake reviews and star ratings, and many products included in our study could be subject to those actions, which misinterprets data and gives false information regarding the quality of the product. In a WIRED article we read on false reviews, it mentions that *"unscrupulous or desperate sellers pay for glowing reviews, and some offer gift cards or free products in exchange for five-star ratings. Occasionally, sellers will even solicit false negative reviews on competing products"*. This mass amount of false reviews and star ratings may not be an issue for more well known products, but for more specific search results, it can make a big difference in ranking.
+
 
 >Possible talking points: Limitations of data, other studies, sample size, manipulation of reviews/stars now shown in data, search volume, presence of fake reviews
 
@@ -410,28 +426,15 @@ After running our methods on the dataset, we hope to achieve an answer as to how
 
 1. Does what you search matter in terms of product ranking? 
 
-Based on Question 1 of our analysis, if your search is more general, then the results will
-be skewed towards products from Amazon and its partners; Amazon and partner products will be
-ranked near the top. 
-Third-party products. On the other hand, if your search is more specific, then Amazon's
-products will be ranked significantly lower, but its partner products will stay 
-consistently high.
+Based on Question 1 of our analysis, if your search is more general, then the results will be skewed towards products from Amazon and its partners; Amazon and partner products will be ranked near the top.Third-party products. On the other hand, if your search is more specific, then Amazon's products will be ranked significantly lower, but its partner products will stay consistently high.
 
 2. Can we assume the type of search by simply looking at the product's ranking, stars and reviews on Amazon? 
 
-Question 3 of our analysis told us that there was some correlation between stars and review
-count when Amazon products were first, while there was essentially no correlation between
-stars and review count when non-Amazon sellers were first. This inconsistency shows that 
-we can't reliably use ranking, stars, and review count to determine the type of search.
-This is further supported by Question 4 of our analysis, as our hypothesis testing comparing
-Amazon versus third-party products showed that the mean difference between their positions
-is 0. In other words, Amazon and third-party products are placed similarly. In addition,
-our hypothesis test in Question 5 of third-party versus partner products showed 
-that we reject the null hypothesis. This means that the mean difference between their
-positions is not the same, telling us that third-party and partner products vary with
-where they are placed. The inconsistency between these two hypothesis tests tells us that
-positioning is inconsistent between our three types of sellers, so we can't reliably use
-product position to determine the type of search.
+Question 3 of our analysis told us that there was some correlation between stars and review count when Amazon products were first, while there was essentially no correlation between stars and review count when non-Amazon sellers were first. This inconsistency shows that  we can't reliably use ranking, stars, and review count to determine the type of search. 
+
+This is further supported by Question 4 of our analysis, as our hypothesis testing comparing Amazon versus third-party products showed that the mean difference between their positions is 0. In other words, Amazon and third-party products are placed similarly. 
+
+In addition, our hypothesis test in Question 5 of third-party versus partner products showed that we reject the null hypothesis. This means that the mean difference between their positions is not the same, telling us that third-party and partner products vary with where they are placed. The inconsistency between these two hypothesis tests tells us that positioning is inconsistent between our three types of sellers, so we can't reliably use product position to determine the type of search.
 
 3. How do Amazon's products compare to those marketed by non-Amazon retailers?
 
@@ -443,3 +446,5 @@ Based on Question 2 of our analysis, which suggested that Amazon does not market
 - https://github.com/the-markup/investigation-amazon-brands
 
 - https://landingcube.com/amazon-statistics/
+
+- https://www.wired.com/story/how-to-spot-fake-reviews-amazon/#:~:text=The%20trouble%20is%20that%20many,negative%20reviews%20on%20competing%20products.
