@@ -417,12 +417,12 @@ This data was collected in January 21st, 2021, although being recent, we do unde
 Amazon has had its fair share of criticism regarding fake reviews and star ratings, and many products included in our study could be subject to those actions, which misinterprets data and gives false information regarding the quality of the product. In a WIRED article we read on false reviews, it mentions that *"unscrupulous or desperate sellers pay for glowing reviews, and some offer gift cards or free products in exchange for five-star ratings. Occasionally, sellers will even solicit false negative reviews on competing products"*. This mass amount of false reviews and star ratings may not be an issue for more well known products, but for more specific search results, it can make a big difference in ranking.
 
 
->Possible talking points: Limitations of data, other studies, sample size, manipulation of reviews/stars now shown in data, search volume, presence of fake reviews
+
 
 
 ## Conclusion
 
->What this data shows, how it compares to other studies, what that all means. Answer our leading question(s)
+
 
 1. Does what you search matter in terms of product ranking? 
 
