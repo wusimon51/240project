@@ -52,6 +52,37 @@ Using this data, we came up with three research questions to help us explore the
 This data includes three main categories relating to the Amazon search queries—position on the results page, Amazon stars, and Amazon review count. 
 For each search query, there is an associated amazon product, non_amazon product and independent product ranking, and associated star rating and review count for each product type. For ranking on Amazon, the highest possible place would be 1.0. As products approach 1.0, they are considered to be of more relevance to the search query. The stars are rated on a scale of 0 to 5, meaning as product score approaches 5, they are considered a better product. As the number of reviews increases, the item is reflected to increase in popularity and frequency. If there is a high number of reviews and a high star rating, that would indicate that the product is high-quality and tested out by many consumers, although there is a caveat to this mentioned in the ***limitations*** section
 
+## Variables
+```{r, echo = FALSE}
+library(kableExtra)
+
+amazon_variables = tibble(
+  Variables = c("search_term",
+                "amazon",
+                "partner",
+                "third_party",
+                "amazon_stars",
+                "partner_stars",
+                "third_party_stars",
+                "amazon_reviews",
+                "partner_reviews",
+                "third_party_reviews"),
+  Description = c("search term inputted into amazon website",
+                  "first amazon product ranking associated with search",
+                  "first parter product ranking associated with search",
+                  "first third party product ranking associated with search",
+                  "average star rating of respective amazon product",
+                  "average star rating of respective partner product",
+                  "average star rating of respective third party product",
+                  "number of reviews of respective amazon product",
+                  "number of reviews of respective partner product",
+                  "number of reviews of respective third party product")
+)
+amazon_variables %>% 
+  kable(caption = "Key Variables from the Amazon search term dataset") %>% 
+  kable_styling(position = "left", full_width = FALSE,
+                bootstrap_options = c("striped"))
+```
 
 ```{r, include = F}
 # Summarizing Star and Reviews averages
@@ -104,7 +135,7 @@ mean(study_non_amazon)
 sd(study_non_amazon)
 ```
 
-### Chapter 1 - Finding a threshold
+### Finding a threshold
 It would be a very time consuming task to try and predict the characteristics of a product through the search term, since there are limitless possibilities for what you could search. In our study, we instead looked at the data that each search term provided, to see whether we can characterize the product that way.
 
 Upon inspection of the dataset, we notice that the vast majority of product names are split between two categories. More specific search terms like "13 inch cube storage bins" and more general search terms like "alcohol 70%". (how can u assume this when you don't have search volume data).
