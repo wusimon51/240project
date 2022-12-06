@@ -79,7 +79,7 @@ amazon_variables = tibble(
                   "number of reviews of respective third party product")
 )
 amazon_variables %>% 
-  kable(caption = "Key Variables from the Amazon search term dataset") %>% 
+  kable(caption = "Key Variables from the Amazon Search Term Dataset") %>% 
   kable_styling(position = "left", full_width = FALSE,
                 bootstrap_options = c("striped"))
 ```
@@ -144,7 +144,7 @@ But how do we differentiate between these two?
 
 We would need some threshold value for the positioning of products to decide what makes a product more general or specific.
 
-The framework behind Amazon allows Amazon and other parties to sell products. We understand that Amazon is unable to create every possible product on earth because they are a single company. On Amazon, there are approximately 12 million Amazon products and 353 million classified as third party. So, a majority of products are not Amazon, and it would make sense that for those products that are there, they would satisfy more general search terms, for a larger audience. There is always the case that a super specific search term has an associated Amazon product.
+The framework behind Amazon allows Amazon and other parties to sell products. We understand that Amazon is unable to create every possible product on earth because they are a single company. So, a majority of products are not Amazon, and it would make sense that for those products that are there, they would satisfy more general search terms, for a larger audience. There is always the case that a super specific search term has an associated Amazon product.
 
 We will use the Amazon product positions to find a value suggesting that having a position at that value or lower, suggests that Amazon has its own product, which is why it is shown so high in the ranking.
 
@@ -159,7 +159,7 @@ sigma = sd(threshold)
 pnorm(3, mean = mu, sd = sigma)
 ```
 
-Considering the lower ~ 16% of the values, we come to a value of 3, which would say that a large majority of amazon products (84%) are positioned greater than 3. We end up using 3 as the threshold since it captures a realistic percentage of amazon products that are general. Any products placed with a value of 3 or lower are considered General Products, while all others are considered Specific Products. 
+Considering the lower ~ 16% of the values, we come to a value of 3, which would say that a large majority of amazon products (84%) are positioned greater than 3. We end up using 3 as the threshold since it captures a realistic percentage of amazon products that are general, in our view. Any products placed with a value of 3 or lower are considered General Products, while all others (greater than 3) are considered Specific Products. 
 
 
 ### Question 1
