@@ -528,22 +528,23 @@ Amazon has had its fair share of criticism regarding fake reviews and star ratin
 ## Conclusion
 
 
-
 1. Does what you search matter in terms of product ranking? 
 
-Based on Question 1 of our analysis, if your search is more general, then the results will be skewed towards products from Amazon and its partners; Amazon and partner products will be ranked near the top. Third-party products. On the other hand, if your search is more specific, then Amazon's products will be ranked significantly lower, but its partner products will stay consistently high.
+Based on Question 1 of our analysis, if your search is more general, then the results will be skewed towards products from Amazon, more so than Partner (Non_Amazon). On the other hand, if your search is more specific, then Amazon's products will be ranked significantly lower, but its partner products will stay consistently high.
 
 2. Can we assume the type of search by simply looking at the product's ranking, stars and reviews on Amazon? 
 
 Question 3 of our analysis told us that there was some correlation between stars and review count when Amazon products were first, while there was essentially no correlation between stars and review count when non-Amazon sellers were first. This inconsistency shows that  we can't reliably use ranking, stars, and review count to determine the type of search. 
 
-This is further supported by Question 4 of our analysis, as our hypothesis testing comparing Amazon versus third-party products showed that the mean difference between their positions is 0. In other words, Amazon and third-party products are placed similarly. 
+This is further supported by Question 4 of our analysis, as our hypothesis testing comparing Amazon versus Partner (Non_Amazon) products showed that the mean difference between their positions is 0. In other words, Amazon and Partner (Non_Amazon) products are placed similarly. 
 
 In addition, our hypothesis test in Question 5 of third-party versus partner products showed that we reject the null hypothesis. This means that the mean difference between their positions is not the same, telling us that third-party and partner products vary with where they are placed. The inconsistency between these two hypothesis tests tells us that positioning is inconsistent between our three types of sellers, so we can't reliably use product position to determine the type of search.
 
 3. How do Amazon's products compare to those marketed by non-Amazon retailers?
 
-Based on Question 2 of our analysis, which suggested that Amazon does not market their products higher based on quality, and Question 1 which suggested that Amazon markets their general products higher than specific ones, we had hypothesized that Amazon products were only placed higher to get more foot traffic and would not hold up in quality when compared to non-Amazon retailers. However, when we ran our hypothesis tests comparing the mean placement of Amazon vs Third Party, we found strong similarity between the two. This disproves our hypothesis, instead suggesting that there are other factors at play that determine the placement of Amazon products on their website. 
+Based on Question 2 of our analysis, which suggested that Amazon does not market their products higher based on quality, and Question 1 which suggested that Amazon markets their general products higher than specific ones, we had hypothesized that Amazon products were only placed higher to get more foot traffic and would not hold up in quality when compared to Non-Amazon retailers. However, when we ran our hypothesis tests comparing the mean placement of Amazon vs Partner, we found strong similarity between the two. This disproves our hypothesis, instead suggesting that there are other factors at play that determine the placement of Amazon products on their website. In Question 3 we see that the correlation between number of stars and number of reviews is much stronger in products where Amazon was ranked higher than Partner (Non-Amazon) products. This could suggest that Amazon products are a more trustworthy brand, at the very least for the general products it offers. 
+
+
 
 ## Sources:
 - https://medium.com/@Shoemaker703/how-does-amazon-select-the-top-product-in-its-search-results-and-why-is-it-usually-one-of-amazons-662d122591d0
