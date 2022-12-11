@@ -259,6 +259,8 @@ head(amazon_first)
 ggplot(amazon_first, aes(x = amazon_stars, y = amazon_reviews)) +
   geom_point(alpha = 0.65) +
   scale_y_log10() +
+  geom_smooth(se = F, method = "lm") +
+  geom_smooth(se = F, color = "red") +
   xlab("Star Rating") +
   ylab("Review Count") +
   ggtitle("Correllation of Amazon Products", 
@@ -288,7 +290,7 @@ correlation1 = cor(amazon_first$amazon_stars, amazon_first$amazon_reviews)
 correlation1
 ```
 
-The spread of the residuals in this plot is pretty evenly spread out, with a correlation coefficient of .27. While this is low, it's expected not to have a perfect correlation as most products are rated very close together. 
+The spread of the residuals in this plot is pretty evenly spread out, with a correlation coefficient of .27. While this is low, it's expected not to have a perfect correlation as most products are rated very close together.
 
 #### Partner (Non_Amazon) products
 
@@ -311,10 +313,12 @@ head(non_amazon_first)
 ggplot(non_amazon_first, aes(x = partner_stars, y = partner_reviews)) +
   geom_point(alpha = 0.65) +
   scale_y_log10() +
+  geom_smooth(se = F, method = "lm") +
+  geom_smooth(se = F, color = "red") +
   xlab("Star Rating") +
   ylab("Review Count") +
-  ggtitle("Correllation of Amazon Products", 
-          subtitle = "Where the product is ranked higher than Partner (Non_Amazon)")
+  ggtitle("Correllation of Partner (Non_Amazon) Products", 
+          subtitle = "Where the product is ranked higher than Amazon products")
 ```
 
 > Comparing stars to reviews, we generate a linear relationship between using reviews to predict stars and graph the residuals based on our line of best fit. After that, we calculate the correlation coefficient relating our two variables. 
@@ -339,10 +343,16 @@ correlation2 = cor(non_amazon_first$partner_stars, non_amazon_first$partner_revi
 correlation2
 ```
 
-- The spread of the residuals in this plot is much worse than the previous one. Note how the dashed line 0 represents the middle of the spread, which is not shown in this graph. There is much more spread under 0 compared to the spread over 0. Also note that the correlation coefficient is 0.08, which is significantly lower than Amazon's 0.27.
+The spread of the residuals in this plot is much worse than the previous one. Note how the dashed line 0 represents the middle of the spread, which is not shown in this graph. There is much more spread under 0 compared to the spread over 0. Also note that the correlation coefficient is 0.08, which is significantly lower than Amazon's 0.27.
 
-####   Analysis 
+#### Analysis 
 The correlation between number of stars and number of reviews is much stronger in products where Amazon was ranked higher than Partner (Non-Amazon) products. This suggests that there is a stronger relationship between number of reviews and quality of Amazon products compared to non-Amazon products. For the everyday consumer, this could mean that Amazon products are a more trustworthy brand, at the very least for the general products it offers.
+
+Going back to one of our original questions for this study:
+
+- Can we assume the type of search by simply looking at the product's ranking, stars and reviews on Amazon? 
+
+Our analysis upon the the correlation between number of stars and number of reviews turned low for both Amazon and Partner (Non_Amazon) products, suggesting that these are not perfect indicators to look at. We believe this may have to do with reviews, since a product can have a low star rating and a lot of negative reviews, or a high star rating with a few positive reviews, which we wouldn't generally expect. This in turn can shift our data somewhat randomly, not allowing for consistent results. This could be a **limitation**, since our data does not show the review quality for each product, positive or negative.
 
 
 
