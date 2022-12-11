@@ -230,18 +230,20 @@ As for specific searches, Amazon typically does not have its own brand, causing 
 amazon %>%
     ggplot(aes(x=amazon)) +
     geom_bar(fill = 'blue', color = 'black') +
-    ggtitle("Distribution of Positions for Amazon Products") +
+    ggtitle("Distribution of Positions for Amazon Products", subtitle="(Lower is better)") +
     xlab("Position on Amazon") +
     ylab("Frequency") +
-    geom_vline(xintercept = 3.5, color = 'red', linetype = 'dashed')
+    geom_vline(xintercept = 1, color = 'red', linetype = 'dashed')
 
 amazon %>%
     ggplot(aes(x=partner)) +
     geom_bar(fill = 'orange', color = 'black') +
-    ggtitle("Distribution of Positions for Non-Amazon Products") +
+    ggtitle("Distribution of Positions for Non-Amazon Products", subtitle="(Lower is better)") +
     xlab("Position on Amazon") +
     ylab("Frequency") +
-    scale_y_log10() #Added log scale; don't know if it makes it look better or worse
+    geom_vline(xintercept = 1, color = 'red', linetype = 'dashed')
+
+    #scale_y_log10() #Added log scale; don't know if it makes it look better or worse
 ```
 
 ####   Analysis 
