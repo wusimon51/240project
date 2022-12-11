@@ -50,7 +50,20 @@ Using this data, we came up with three research questions to help us explore the
 
 ## Background
 This data includes three main categories relating to the Amazon search queries—position on the results page, Amazon stars, and Amazon review count. 
-For each search query, there is an associated Amazon product, non_amazon product and independent product ranking, and associated star rating and review count for each product type. For ranking on Amazon, the highest possible place would be 1.0. As products approach 1.0, they are considered to be of more relevance to the search query. The stars are rated on a scale of 0 to 5, meaning as product score approaches 5, they are considered a better product. As the number of reviews increases, the item is reflected to increase in popularity and frequency. If there is a high number of reviews and a high star rating, that would indicate that the product is high-quality and tested out by many consumers, although there is a caveat to this mentioned in the ***limitations*** section
+For each search query, there is an associated Amazon product, Partner product, Independent product ranking, and associated star rating and review count for each product type. 
+
+| **Amazon Product** : An officially licensed Amazon product
+|       **Classification** : Amazon
+|
+| **Partner Product** : Third Party Sellers under a partnership with Amazon for marketing purposes
+|       **Classification** : Non_Amazon
+|
+| **Independent Product** : Third Party Sellers not under a partnership with Amazon
+|       **Classification** : Non_Amazon
+|
+
+
+For ranking on Amazon, the highest possible place would be 1.0. As products approach 1.0, they are considered to be of more relevance to the search query. The stars are rated on a scale of 0 to 5, meaning as product score approaches 5, they are considered a better product. As the number of reviews increases, the item is reflected to increase in popularity and frequency. If there is a high number of reviews and a high star rating, that would indicate that the product is high-quality and tested out by many consumers, although there is a caveat to this mentioned in the ***limitations*** section
 
 ## Variables
 ```{r, echo = FALSE}
