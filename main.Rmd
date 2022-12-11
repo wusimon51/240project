@@ -26,13 +26,12 @@ amazon = read_csv("dataset.csv") %>%
     )
 
 amazon = amazon %>% 
-  mutate(is_general = case_when(amazon <= 3 ~ "yes", amazon > 3 ~ "no"))
+  mutate(is_general = case_when(amazon <= 1 ~ "yes", amazon > 1 ~ "no"))
 amazon
 
 ```
 
 # What Characterizes a Product's Placement on Amazon?
-
 
 ## Introduction
 Our dataset is a subset of search queries on Amazon from a GitHub repository created by The Markup on October 14, 2021.
@@ -66,7 +65,8 @@ amazon_variables = tibble(
                 "third_party_stars",
                 "amazon_reviews",
                 "partner_reviews",
-                "third_party_reviews"),
+                "third_party_reviews",
+                "position"),
   Description = c("search term inputted into Amazon website",
                   "first Amazon product ranking associated with search",
                   "first parter product ranking associated with search",
@@ -76,7 +76,8 @@ amazon_variables = tibble(
                   "average star rating of respective third party product",
                   "number of reviews of respective Amazon product",
                   "number of reviews of respective partner product",
-                  "number of reviews of respective third party product")
+                  "number of reviews of respective third party product",
+                  "position of product on amazon search result")
 )
 amazon_variables %>% 
   kable(caption = "Key Variables from the Amazon Search Term Dataset") %>% 
@@ -144,7 +145,7 @@ But how do we differentiate between these two?
 
 We would need some threshold value for the positioning of products to decide what makes a product more general or specific.
 
-The framework behind Amazon allows Amazon and other parties to sell products. We understand that Amazon is unable to create every possible product on earth because they are a single company. So, a majority of products are not Amazon, and it would make sense that for those products that are there, they would satisfy more general search terms, for a larger audience. There is always the case that a super specific search term has an associated Amazon product.
+The framework behind Amazon allows Amazon and other parties to sell products. We understand that Amazon is unable to create every possible product on earth because they are a single company. On Amazon, there are approximately 12 million Amazon products and 353 million classified as third party. So, a majority of products (97%) are not Amazon, and it would make sense that for those products that are there, they would satisfy more general search terms, for a larger audience. There is always the case that a super specific search term has an associated Amazon product.
 
 We will use the Amazon product positions to find a value suggesting that having a position at that value or lower, suggests that Amazon has its own product, which is why it is shown so high in the ranking.
 
@@ -156,16 +157,16 @@ mu = mean(threshold)
 sigma = sd(threshold)
 
 
-pnorm(3, mean = mu, sd = sigma)
+pnorm(1, mean = mu, sd = sigma)
 ```
 
-Considering the lower ~ 16% of the values, we come to a value of 3, which would say that a large majority of amazon products (84%) are positioned greater than 3. We end up using 3 as the threshold since it captures a realistic percentage of amazon products that are general, in our view. Any products placed with a value of 3 or lower are considered General Products, while all others (greater than 3) are considered Specific Products. 
+Considering the lower ~ 13% of the values, we use the lowest possible value 1, which would say that a large majority of amazon products (87%) are positioned greater than 1. Even though the 11% does not capture the more realistic average of 3% (12 million / 353 million products), we end up using 1 as the threshold since it is the lowest value in our position ranking. Any products placed with a value of 1 are considered General Products, while all others (greater than 1) are considered Specific Products. 
 
 
 ### Question 1
 - How do General and Specific Search Terms Position Averages Vary?
 
->We answer this by comparing general and specific search queries average position using boxplots between Amazon and partner products.
+>We answer this by comparing general and specific search queries average position using boxplots between Amazon and Partner (Non_Amazon) products.
 
 ```{r, echo=FALSE}
 
@@ -203,13 +204,17 @@ ggplot(general_search, aes(x=product_type, y=position)) +
 
 ```
 
->These boxplots compare positions for Amazon and partner products between general and specific search queries. The boxplots reveal that for general queries, Amazon typically has its own brand for general products and will rank it high; however, there are many partnering products that come up right behind it therefore the means are similar hovering around 1 and 3. As for specific searches, Amazon typically does not have its own brand, causing the average to dip around 19 whereas partner products average remains high around 2. This concludes that for general searches, Amazon tends to consequently position itself much higher; however, for specific searches Amazon typically lacks its own version and will position itself significantly lower.
+####   Analysis 
+These boxplots compare positions for Amazon and partner products between general and specific search queries. The boxplots reveal that for general queries, Amazon typically has its own brand for general products and will rank it high; however, there are many partnering products that come up right behind it therefore the means are similar hovering around 1 and 3. 
+
+As for specific searches, Amazon typically does not have its own brand, causing the average to dip around 19 whereas partner products average remains high around 2. This concludes that for general searches, Amazon tends to consequently position itself much higher; however, for specific searches Amazon typically lacks its own version and will position itself significantly lower.
 
 
 ### Question 2
-- What is the distribution of positions for Amazon products compared to Non_Amazon products in search results?
+- What is the distribution of positions for Amazon products compared to Partner (Non_Amazon) products in search results?
 
-We answer this by generating a graph of all Amazon products and the frequency of their position on the website. 
+> We answer this by generating a graph of all Amazon products and the frequency of their position on the website. 
+
 ```{r, echo = F}
 amazon %>%
     ggplot(aes(x=amazon)) +
@@ -228,21 +233,41 @@ amazon %>%
     scale_y_log10() #Added log scale; don't know if it makes it look better or worse
 ```
 
-> Connecting to Q1, these two graphs show the contrast in product placement between Amazon and non_Amazon products. With its own products, Amazon tends to place its own products either at a premiere position (1st) or much lower (down to approx. 60th), whereas non_Amazon products are always placed in higher positions since third parties can produce more specialized products, also including general.
+####   Analysis 
+Connecting to Q1, these two graphs show the contrast in product placement between Amazon and non_Amazon products. With its own products, Amazon tends to place its own products either at a premiere position (1st) or much lower (down to approx. 60th), whereas non_Amazon products are always placed in higher positions since third parties can produce more specialized products, also including general.
 
-> Note that the tall bar ONLY accounts for situations in which Amazon's product is #1. While this may be reminicient of their product quality, it is not reflected in a general downward trend as the position increases. Instead, after position 1, the frequency is not consistent until a dropoff after 40.  This could suggest that Amazon does not place their items at #1 because they have the best quality, but rather that they want more viewer traffic over their products. 
+Note that the tall bar ONLY accounts for situations in which Amazon's product is #1. While this may be reminicient of their product quality, it is not reflected in a general downward trend as the position increases. Instead, after position 1, the frequency is not consistent until a dropoff after 40.  This could suggest that Amazon does not place their items at #1 because they have the best quality, but rather that they want more viewer traffic over their products. 
 
 
 ### Question 3
-- What is the difference in correlation for stars and reviews in products where Amazon is first compared to where non-Amazon products come first?
+- What is the difference in correlation for stars and reviews in products where Amazon is first compared to where Partner (Non-Amazon) products come first?
 
->We first filter products in which Amazon's position on the website is higher than the other two. Comparing stars to reviews, we generate a linear relationship between the two and graph the residuals based on our line of best fit. After that, we calculate the correlation coefficient relating our two variables. 
+#### Amazon Products
+> We first filter products in which Amazon's position on the website is higher than the Partner (Non_Amazon) product. 
 
 ```{r, echo = F}
 amazon_first = amazon %>% #select products in which Amazon comes first
   filter(amazon < partner) %>% 
-  select(starts_with('amazon')) 
+  select(starts_with('amazon'))
 
+head(amazon_first)
+```
+
+> We generate a graph to analyze the correllation; note that we scaled the y axis by log10 to have a better visual understanding of the data.
+
+```{r, echo = F}
+ggplot(amazon_first, aes(x = amazon_stars, y = amazon_reviews)) +
+  geom_point(alpha = 0.65) +
+  scale_y_log10() +
+  xlab("Star Rating") +
+  ylab("Review Count") +
+  ggtitle("Correllation of Amazon Products", 
+          subtitle = "Where the product is ranked higher than Partner (Non_Amazon)")
+```
+
+> Comparing stars to reviews, we generate a linear relationship between using amazon_reviews to predict amazon_stars and graph the residuals based on our line of best fit. After that, we calculate the correlation coefficient relating our two variables. 
+
+```{r, echo = F}
 amazon_lm = lm(amazon_stars ~ amazon_reviews, data = amazon_first) 
 #Correlation between stars and reviews
 
@@ -263,15 +288,38 @@ correlation1 = cor(amazon_first$amazon_stars, amazon_first$amazon_reviews)
 correlation1
 ```
 
-- The spread of the residuals in this plot is pretty evenly spread out, with a correlation coefficient of .27. While this is low, it's expected not to have a perfect correlation as most products are rated very close together. 
+The spread of the residuals in this plot is pretty evenly spread out, with a correlation coefficient of .27. While this is low, it's expected not to have a perfect correlation as most products are rated very close together. 
 
->Next, we do the same thing as before, but instead we look at products in which Amazon didn't come first. 
+#### Partner (Non_Amazon) products
+
+Next, we do the same thing as before, but instead we look at products in which Partner (Non_Amazon) products came before Amazon.
+
+> We first filter products in which Amazon's position on the website is higher than the Partner (Non_Amazon) product. 
 
 ```{r, echo = F}
-non_amazon_first = amazon %>% #Same as previous, but with non-amazon products (partner)
+# Same as previous, but with non-amazon products (partner)
+non_amazon_first = amazon %>% 
   filter(partner < amazon) %>% 
   select(starts_with('partner'))
 
+head(non_amazon_first)
+```
+
+> We generate a graph to analyze the correllation; note that we scaled the y axis by log10 to have a better visual understanding of the data.
+
+```{r, echo = F}
+ggplot(non_amazon_first, aes(x = partner_stars, y = partner_reviews)) +
+  geom_point(alpha = 0.65) +
+  scale_y_log10() +
+  xlab("Star Rating") +
+  ylab("Review Count") +
+  ggtitle("Correllation of Amazon Products", 
+          subtitle = "Where the product is ranked higher than Partner (Non_Amazon)")
+```
+
+> Comparing stars to reviews, we generate a linear relationship between using reviews to predict stars and graph the residuals based on our line of best fit. After that, we calculate the correlation coefficient relating our two variables. 
+
+```{r, echo = F}
 non_amazon_lm = lm(partner_stars ~ partner_reviews, data = non_amazon_first)
 
 non_amazon_first = non_amazon_first %>% 
@@ -294,8 +342,7 @@ correlation2
 - The spread of the residuals in this plot is much worse than the previous one. Note how the dashed line 0 represents the middle of the spread, which is not shown in this graph. There is much more spread under 0 compared to the spread over 0. Also note that the correlation coefficient is 0.08, which is significantly lower than Amazon's 0.27.
 
 ####   Analysis 
->The correlation between number of stars and number of reviews is much stronger in products where Amazon was ranked higher than non-Amazon products. This suggests that there is a stronger relationship between number of reviews and quality of Amazon products compared to non-Amazon products. For the everyday consumer, this could mean that Amazon products are a more trustworthy brand, at the very least for the general products it offers.
-
+The correlation between number of stars and number of reviews is much stronger in products where Amazon was ranked higher than Partner (Non-Amazon) products. This suggests that there is a stronger relationship between number of reviews and quality of Amazon products compared to non-Amazon products. For the everyday consumer, this could mean that Amazon products are a more trustworthy brand, at the very least for the general products it offers.
 
 
 
@@ -482,3 +529,5 @@ Based on Question 2 of our analysis, which suggested that Amazon does not market
 - https://landingcube.com/amazon-statistics/
 
 - https://www.wired.com/story/how-to-spot-fake-reviews-amazon/#:~:text=The%20trouble%20is%20that%20many,negative%20reviews%20on%20competing%20products.
+
+- https://landingcube.com/amazon-statistics/
