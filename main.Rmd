@@ -48,9 +48,9 @@ Using this data, we came up with three research questions to help us explore the
 
 - How do Amazon's products compare to those marketed by non-Amazon retailers?
 
-## Data
+## Background
 This data includes three main categories relating to the Amazon search queries—position on the results page, Amazon stars, and Amazon review count. 
-For each search query, there is an associated amazon product, non_amazon product and independent product ranking, and associated star rating and review count for each product type. For ranking on Amazon, the highest possible place would be 1.0. As products approach 1.0, they are considered to be of more relevance to the search query. The stars are rated on a scale of 0 to 5, meaning as product score approaches 5, they are considered a better product. As the number of reviews increases, the item is reflected to increase in popularity and frequency. If there is a high number of reviews and a high star rating, that would indicate that the product is high-quality and tested out by many consumers, although there is a caveat to this mentioned in the ***limitations*** section
+For each search query, there is an associated Amazon product, non_amazon product and independent product ranking, and associated star rating and review count for each product type. For ranking on Amazon, the highest possible place would be 1.0. As products approach 1.0, they are considered to be of more relevance to the search query. The stars are rated on a scale of 0 to 5, meaning as product score approaches 5, they are considered a better product. As the number of reviews increases, the item is reflected to increase in popularity and frequency. If there is a high number of reviews and a high star rating, that would indicate that the product is high-quality and tested out by many consumers, although there is a caveat to this mentioned in the ***limitations*** section
 
 ## Variables
 ```{r, echo = FALSE}
@@ -139,7 +139,7 @@ sd(study_non_amazon)
 ### Finding a threshold
 It would be a very time consuming task to try and predict the characteristics of a product through the search term, since there are limitless possibilities for what you could search. In our study, we instead looked at the data that each search term provided, to see whether we can characterize the product that way.
 
-Upon inspection of the dataset, we notice that the vast majority of product names are split between two categories. More specific search terms like "13 inch cube storage bins" and more general search terms like "alcohol 70%". (how can u assume this when you don't have search volume data).
+Upon inspection of the dataset, we notice that the vast majority of product names are split between two categories. More specific search terms like "13 inch cube storage bins" and more general search terms like "alcohol 70%".
 
 But how do we differentiate between these two?
 
@@ -160,8 +160,8 @@ sigma = sd(threshold)
 pnorm(1, mean = mu, sd = sigma)
 ```
 
-Considering the lower ~ 13% of the values, we use the lowest possible value 1, which would say that a large majority of amazon products (87%) are positioned greater than 1. Even though the 11% does not capture the more realistic average of 3% (12 million / 353 million products), we end up using 1 as the threshold since it is the lowest value in our position ranking. Any products placed with a value of 1 are considered General Products, while all others (greater than 1) are considered Specific Products. 
 
+Considering the lower ~ 13% of the values, we use the lowest possible value 1, which would say that a large majority of amazon products (87%) are positioned greater than 1. Even though the 11% does not capture the more realistic average of 3% (12 million / 353 million products), we end up using 1 as the threshold since it is the lowest value in our position ranking. Any products placed with a value of 1 are considered General Products, while all others (greater than 1) are considered Specific Products. 
 
 ### Question 1
 - How do General and Specific Search Terms Position Averages Vary?
@@ -170,7 +170,7 @@ Considering the lower ~ 13% of the values, we use the lowest possible value 1, w
 
 ```{r, echo=FALSE}
 
-#creates DF with only secific products
+#creates DF with only specific products
 specific_search = amazon %>% 
   filter(is_general == "no") %>% 
   select(amazon, partner)
@@ -179,8 +179,8 @@ specific_search = amazon %>%
 specific_search = specific_search %>% 
   pivot_longer(cols=1:2, names_to = "product_type", values_to = "position")
 
-ggplot(specific_search, aes(x=product_type, y=position)) +
-  geom_boxplot(color = 'palegreen4', fill = 'hotpink1') +
+ggplot(specific_search, aes(x=product_type, y=position, color = product_type)) +
+  geom_boxplot() +
   ggtitle("Position Average for Specific Products") +
   xlab("Product Type") +
   ylab("Position")
@@ -196,7 +196,7 @@ general_search = general_search %>%
 
 
 ggplot(general_search, aes(x=product_type, y=position)) +
-  geom_boxplot(color = 'palegreen4', fill = 'hotpink1') +
+  geom_boxplot(color = 'palegreen4', fill = 'orange') +
   ggtitle("Position Average for General Products") +
   xlab("Product Type") +
   ylab("Position")
@@ -226,8 +226,8 @@ amazon %>%
 
 amazon %>%
     ggplot(aes(x=partner)) +
-    geom_bar(fill = 'purple', color = 'black') +
-    ggtitle("Distribution of Positions for Non_Amazon Products") +
+    geom_bar(fill = 'orange', color = 'black') +
+    ggtitle("Distribution of Positions for Non-Amazon Products") +
     xlab("Position on Amazon") +
     ylab("Frequency") +
     scale_y_log10() #Added log scale; don't know if it makes it look better or worse
@@ -276,10 +276,10 @@ amazon_first = amazon_first %>%
 
 ggplot(amazon_first) + #Residual plot with reviews on x, residuals on y
   aes(amazon_reviews, resid) + 
-  geom_point(color = 'chartreuse4', size = 4) +
+  geom_point(color = 'blue', size = 2, alpha=0.65) +
   scale_x_log10()+ 
   geom_hline(yintercept = 0, color = 'red', linetype = 'dashed') +
-  xlab("Number of Reviews")+
+  xlab("Number of Reviews") +
   ylab("Residuals") +
   ggtitle("Residual Plot of Amazon Reviews", 
           subtitle = "Where Amazon had the First Product")
@@ -327,7 +327,7 @@ non_amazon_first = non_amazon_first %>%
 
 ggplot(non_amazon_first) + 
   aes(partner_reviews, resid) + 
-  geom_point(color = 'orchid3', size = 4) +
+  geom_point(color = 'orange', size = 2, alpha=0.65) +
   scale_x_log10() + 
   geom_hline(yintercept = 0, color = 'red', linetype = 'dashed') +
   xlab("Number of Reviews")+
@@ -491,7 +491,7 @@ After running our methods on the dataset, we hope to achieve an answer as to how
 ## Limitations of our Study
 Especially with a project idea like studying Amazon search results, we encountered a lot of limitations in understanding the data. 
 
-Originally we had planned to study whether Amazon places its own products higher on the the site, compared to non_Amazon products, but one limitation was that we didn't have search volume data. To retrieve the original data set from the github repo, would have been too big for this project span. Instead, using the subset of search results we had, we decided to change the study to examine how Amazon products are defined.
+Originally we had planned to study whether Amazon places its own products higher on the the site, compared to non_Amazon products, but one limitation was that we didn't have search volume data. To retrieve the original data set from the github repo would have been too big for this project span. Instead, using the subset of search results we had, we decided to change the study to examine how Amazon products are positioned.
 
 This data was collected in January 21st, 2021, although being recent, we do understand that company frameworks (including Amazon's) change over time, so search results could behave more differently in the present.
 
@@ -507,7 +507,7 @@ Amazon has had its fair share of criticism regarding fake reviews and star ratin
 
 1. Does what you search matter in terms of product ranking? 
 
-Based on Question 1 of our analysis, if your search is more general, then the results will be skewed towards products from Amazon and its partners; Amazon and partner products will be ranked near the top.Third-party products. On the other hand, if your search is more specific, then Amazon's products will be ranked significantly lower, but its partner products will stay consistently high.
+Based on Question 1 of our analysis, if your search is more general, then the results will be skewed towards products from Amazon and its partners; Amazon and partner products will be ranked near the top. Third-party products. On the other hand, if your search is more specific, then Amazon's products will be ranked significantly lower, but its partner products will stay consistently high.
 
 2. Can we assume the type of search by simply looking at the product's ranking, stars and reviews on Amazon? 
 
