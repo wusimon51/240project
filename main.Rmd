@@ -495,7 +495,7 @@ pvalue
 > (Note that the calulated value was so small, our computer was forced to round to 0) Because of this, we are almost certain (p≈0) that the mean difference between Amazon and Partner products is not 0. 
 
 ## Analysis of Hypothesis Tests
-According to our data, Amazon and its partners do not share any privileges of being placed higher on the website. There is strong evidence that they are equal in placement. Third-party products, however, do not share this privilege. They are on average placed way lower on the website than Amazon products, and there is very strong evidence to suggest that they are not equal. 
+According to our data, Amazon and Partner products do share some privileges of being placed higher on the website. There is strong evidence that they are not equal in mean placement. Third-party products, however, do not share this privilege. They are on average placed way lower on the website than Amazon products, and there is very strong evidence to suggest that they are not equal. 
 
 # Discussion
 After running our methods on the dataset, we hope to achieve an answer as to how Amazon characterizes the products it displays on for search results. This is done after taking whether a search is general or specific, a product's position on the page, stars, and review counts into consideration. We wanted to see if Amazon did any sort of manipulation of search results depending on what was searched, and if it ignored any parameters that should have been included. This then helps us determine whether we can actually get more refined search results, or if that's out of our control.
