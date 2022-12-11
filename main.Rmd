@@ -409,7 +409,7 @@ $$
 X_i = Y_i
 $$
 
->After our calculations, we have constructed a confidence interval for the mean of our two groups:
+> After our calculations, we have constructed a confidence interval for the mean of our two groups:
 
 ```{r, echo=FALSE}
 #Code modified from lizard examples in class to calculate 95% confidence interval of
@@ -436,9 +436,9 @@ ci = ci_calc %>%
 ci
 ```
 
->We are 95% confident that the average difference in position between Amazon products and third party products is between -0.366 and 1.45. Note that this includes 0, which provides evidence supporting the null hypothesis that the two sets of products are similar. 
+> We are 95% confident that the average difference in position between Amazon products and third party products is between -0.366 and 1.45. Note that this includes 0, which provides evidence supporting the null hypothesis that the two sets of products are similar. 
 
->Next, we calculate the p-value: 
+> Next, we calculate the p-value: 
 
 ```{r, echo=FALSE}
 #Calculate two sided p-value
@@ -446,12 +446,12 @@ pvalue = 2*pt(-abs(amazon_sum$t), amazon_sum$n-1)
 pvalue
 ```
 
->There is a good chance (p = 0.24) that the mean difference in position between Amazon products and third party products is 0. 
+> There is a good chance (p = 0.24) that the mean difference in position between Amazon products and third party products is 0. 
 
 ### Question 5
 - Hypothesis Test: Are Amazon Partner Products on average placed higher than those from Third Party Products?
 
->We will then repeat our hypothesis test for comparing Third Party products vs Partner products.
+> We will then repeat our hypothesis test for comparing Third Party products vs Partner products.
 
 Model 
 $$
@@ -470,7 +470,7 @@ $$
 X_i = Y_i
 $$
 
->Same as last time, we now construct a confidence interval for the mean of our two groups. 
+> Same as last time, we now construct a confidence interval for the mean of our two groups. 
 
 ```{r, echo = FALSE}
 #Repeated process with Third Party vs Partner
@@ -496,19 +496,16 @@ ci = ci_calc %>%
 
 ci
 ```
->We are 95% confident that the mean difference between third party products and partner products is between 14.0 and 15.2. Note that 0 is not within our confidence interval, as opposed to the previous hypothesis test. This, on the other hand, provides evidence contrary to the null hypothesis, which would then suggest that the two sets of products are not similar. 
+> We are 95% confident that the mean difference between third party products and partner products is between 14.0 and 15.2. Note that 0 is not within our confidence interval, as opposed to the previous hypothesis test. This, on the other hand, provides evidence contrary to the null hypothesis, which would then suggest that the two sets of products are not similar. 
 
->And again, we calculate our p value to test how probable our hypothesized mean of 0 is when compared to the mean of our dataset. 
+> And again, we calculate our p value to test how probable our hypothesized mean of 0 is when compared to the mean of our dataset. 
 
 ```{r, echo=FALSE}
 pvalue = 2*pt(-abs(amazon_sum2$t), amazon_sum2$n-1)
 pvalue
 ```
 
->(Note that the calulated value was so small, our computer was forced to round to 0) Because of this, we are almost certain (p≈0) that the mean difference between third party products and partner products is not 0. 
-
-## Analysis of Hypothesis Tests
-According to our data, Amazon and its partners do not share any privileges of being placed higher on the website. There is strong evidence that they are equal in placement. Third-party products, however, do not share this privilege. They are on average placed way lower on the website than Amazon products, and there is very strong evidence to suggest that they are not equal. 
+> (Note that the calulated value was so small, our computer was forced to round to 0) Because of this, we are almost certain (p≈0) that the mean difference between Third Party Products and Partner Products is not 0. 
 
 ### Question 6
 - Hypothesis Test: Are Amazon Products on average placed higher than Partner Products?
@@ -567,7 +564,10 @@ pvalue = 2*pt(-abs(amazon_sum2$t), amazon_sum2$n-1)
 pvalue
 ```
 
->(Note that the calulated value was so small, our computer was forced to round to 0) Because of this, we are almost certain (p≈0) that the mean difference between Amazon and Partner products is not 0. 
+> (Note that the calulated value was so small, our computer was forced to round to 0) Because of this, we are almost certain (p≈0) that the mean difference between Amazon and Partner products is not 0. 
+
+## Analysis of Hypothesis Tests
+According to our data, Amazon and its partners do not share any privileges of being placed higher on the website. There is strong evidence that they are equal in placement. Third-party products, however, do not share this privilege. They are on average placed way lower on the website than Amazon products, and there is very strong evidence to suggest that they are not equal. 
 
 # Discussion
 After running our methods on the dataset, we hope to achieve an answer as to how Amazon characterizes the products it displays on for search results. This is done after taking whether a search is general or specific, a product's position on the page, stars, and review counts into consideration. We wanted to see if Amazon did any sort of manipulation of search results depending on what was searched, and if it ignored any parameters that should have been included. This then helps us determine whether we can actually get more refined search results, or if that's out of our control.
