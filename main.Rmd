@@ -582,9 +582,6 @@ This data was collected in January 21st, 2021, although being recent, we do unde
 Amazon has had its fair share of criticism regarding fake reviews and star ratings, and many products included in our study could be subject to those actions, which misinterprets data and gives false information regarding the quality of the product. In a WIRED article we read on false reviews, it mentions that *"unscrupulous or desperate sellers pay for glowing reviews, and some offer gift cards or free products in exchange for five-star ratings. Occasionally, sellers will even solicit false negative reviews on competing products"*. This mass amount of false reviews and star ratings may not be an issue for more well known products, but for more specific search results, it can make a big difference in ranking.
 
 
-
-
-
 ## Conclusion
 
 
@@ -602,9 +599,9 @@ In addition, our hypothesis test in Question 5 of third-party versus partner pro
 
 3. How do Amazon's products compare to those marketed by non-Amazon retailers?
 
-Based on Question 2 of our analysis, which suggested that Amazon does not market their products higher based on quality, and Question 1 which suggested that Amazon markets their general products higher than specific ones, we had hypothesized that Amazon products were only placed higher to get more foot traffic and would not hold up in quality when compared to Non-Amazon retailers. However, when we ran our hypothesis tests comparing the mean placement of Amazon vs Partner, we found strong similarity between the two. This disproves our hypothesis, instead suggesting that there are other factors at play that determine the placement of Amazon products on their website. In Question 3 we see that the correlation between number of stars and number of reviews is much stronger in products where Amazon was ranked higher than Partner (Non-Amazon) products. This could suggest that Amazon products are a more trustworthy brand, at the very least for the general products it offers. 
+Based on Question 2 of our analysis, which suggested that Amazon does not market their products higher based on quality, and Question 1 which suggested that Amazon markets their general products higher than specific ones, we had hypothesized that Amazon products were only placed higher to get more foot traffic and would not hold up in quality when compared to Non-Amazon retailers. In Question 3 we see that the correlation between number of stars and number of reviews is much stronger in products where Amazon was ranked higher than Partner (Non-Amazon) products. This could suggest that Amazon products are a more trustworthy brand, at the very least for the general products it offers.  
 
-
+Moreover, when we ran our hypothesis tests comparing the mean placement of Amazon vs Partner, we found a strong difference between the two. This rejected our null hypothesis, suggesting that ranking does could be determining the placement of Amazon products on their website. 
 
 ## Sources:
 - https://medium.com/@Shoemaker703/how-does-amazon-select-the-top-product-in-its-search-results-and-why-is-it-usually-one-of-amazons-662d122591d0
