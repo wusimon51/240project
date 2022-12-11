@@ -179,8 +179,9 @@ specific_search = amazon %>%
 specific_search = specific_search %>% 
   pivot_longer(cols=1:2, names_to = "product_type", values_to = "position")
 
-ggplot(specific_search, aes(x=product_type, y=position, color = product_type)) +
-  geom_boxplot() +
+colors = c("blue", "orange")
+ggplot(specific_search, aes(x=product_type, y=position)) +
+  geom_boxplot(color=colors) +
   ggtitle("Position Average for Specific Products") +
   xlab("Product Type") +
   ylab("Position")
@@ -196,7 +197,7 @@ general_search = general_search %>%
 
 
 ggplot(general_search, aes(x=product_type, y=position)) +
-  geom_boxplot(color = 'palegreen4', fill = 'orange') +
+  geom_boxplot(color=colors) +
   ggtitle("Position Average for General Products") +
   xlab("Product Type") +
   ylab("Position")
