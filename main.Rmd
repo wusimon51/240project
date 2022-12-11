@@ -51,7 +51,7 @@ Using this data, we came up with three research questions to help us explore the
 
 ## Data
 This data includes three main categories relating to the Amazon search queries—position on the results page, Amazon stars, and Amazon review count. 
-For each search query, there is an associated amazon product, non_amazon product and independent product ranking, and associated star rating and review count for each product type. For ranking on Amazon, the highest possible place would be 1.0. As products approach 1.0, they are considered to be of more relevance to the search query. The stars are rated on a scale of 0 to 5, meaning as product score approaches 5, they are considered a better product. As the number of reviews increases, the item is reflected to increase in popularity and frequency. If there is a high number of reviews and a high star rating, that would indicate that the product is high-quality and tested out by many consumers, although there is a caveat to this mentioned in the ***limitations*** section
+For each search query, there is an associated Amazon product, non-Amazon product and independent product ranking, and associated star rating and review count for each product type. For ranking on Amazon, the highest possible place would be 1.0. As products approach 1.0, they are considered to be of more relevance to the search query. The stars are rated on a scale of 0 to 5, meaning as product score approaches 5, they are considered a better product. As the number of reviews increases, the item is reflected to increase in popularity and frequency. If there is a high number of reviews and a high star rating, that would indicate that the product is high-quality and tested out by many consumers, although there is a caveat to this mentioned in the ***limitations*** section
 
 ## Variables
 ```{r, echo = FALSE}
@@ -159,7 +159,7 @@ sigma = sd(threshold)
 pnorm(3, mean = mu, sd = sigma)
 ```
 
-Considering the lower ~ 16% of the values, we come to a value of 3, which would say that a large majority of amazon products (84%) are positioned greater than 3. We end up using 3 as the threshold since it captures a realistic percentage of amazon products that are general, in our view. Any products placed with a value of 3 or lower are considered General Products, while all others (greater than 3) are considered Specific Products. 
+Considering the lower ~ 16% of the values, we come to a value of 3, which would say that a large majority of Amazon products (84%) are positioned greater than 3. We end up using 3 as the threshold since it captures a realistic percentage of Amazon products that are general, in our view. Any products placed with a value of 3 or lower are considered General Products, while all others (greater than 3) are c     onsidered Specific Products. 
 
 
 ### Question 1
@@ -169,7 +169,7 @@ Considering the lower ~ 16% of the values, we come to a value of 3, which would 
 
 ```{r, echo=FALSE}
 
-#creates DF with only secific products
+#creates DF with only specific products
 specific_search = amazon %>% 
   filter(is_general == "no") %>% 
   select(amazon, partner)
@@ -252,9 +252,9 @@ amazon_first = amazon_first %>%
 ggplot(amazon_first) + #Residual plot with reviews on x, residuals on y
   aes(amazon_reviews, resid) + 
   geom_point(color = 'chartreuse4', size = 4) +
-  scale_x_log10()+ 
+  scale_x_log10() +
   geom_hline(yintercept = 0, color = 'red', linetype = 'dashed') +
-  xlab("Number of Reviews")+
+  xlab("Number of Reviews") +
   ylab("Residuals") +
   ggtitle("Residual Plot of Amazon Reviews", 
           subtitle = "Where Amazon had the First Product")
