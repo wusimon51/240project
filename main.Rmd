@@ -569,10 +569,10 @@ pvalue
 
 >(Note that the calulated value was so small, our computer was forced to round to 0) Because of this, we are almost certain (p≈0) that the mean difference between Amazon and Partner products is not 0. 
 
-## Discussion
-After running our methods on the dataset, we hope to achieve an answer as to how Amazon creates its search results, whether it places products from itself and its partners above products from third-party sellers. This is done after taking stars and review counts into consideration. The implications of this could be that Amazon manipulates its search results, where it favors third-party products the least despite having better stars and more reviews.
+# Discussion
+After running our methods on the dataset, we hope to achieve an answer as to how Amazon characterizes the products it displays on for search results. This is done after taking whether a search is general or specific, a product's position on the page, stars, and review counts into consideration. We wanted to see if Amazon did any sort of manipulation of search results depending on what was searched, and if it ignored any parameters that should have been included. This then helps us determine whether we can actually get more refined search results, or if that's out of our control.
 
-## Limitations of our Study
+### Limitations of our Study
 Especially with a project idea like studying Amazon search results, we encountered a lot of limitations in understanding the data. 
 
 Originally we had planned to study whether Amazon places its own products higher on the the site, compared to non_Amazon products, but one limitation was that we didn't have search volume data. To retrieve the original data set from the github repo would have been too big for this project span. Instead, using the subset of search results we had, we decided to change the study to examine how Amazon products are positioned.
@@ -581,12 +581,7 @@ This data was collected in January 21st, 2021, although being recent, we do unde
 
 Amazon has had its fair share of criticism regarding fake reviews and star ratings, and many products included in our study could be subject to those actions, which misinterprets data and gives false information regarding the quality of the product. In a WIRED article we read on false reviews, it mentions that *"unscrupulous or desperate sellers pay for glowing reviews, and some offer gift cards or free products in exchange for five-star ratings. Occasionally, sellers will even solicit false negative reviews on competing products"*. This mass amount of false reviews and star ratings may not be an issue for more well known products, but for more specific search results, it can make a big difference in ranking.
 
-
-
-
-
-## Conclusion
-
+### Conclusion
 
 1. Does what you search matter in terms of product ranking? 
 
@@ -603,8 +598,6 @@ In addition, our hypothesis test in Question 5 of third-party versus partner pro
 3. How do Amazon's products compare to those marketed by non-Amazon retailers?
 
 Based on Question 2 of our analysis, which suggested that Amazon does not market their products higher based on quality, and Question 1 which suggested that Amazon markets their general products higher than specific ones, we had hypothesized that Amazon products were only placed higher to get more foot traffic and would not hold up in quality when compared to Non-Amazon retailers. However, when we ran our hypothesis tests comparing the mean placement of Amazon vs Partner, we found strong similarity between the two. This disproves our hypothesis, instead suggesting that there are other factors at play that determine the placement of Amazon products on their website. In Question 3 we see that the correlation between number of stars and number of reviews is much stronger in products where Amazon was ranked higher than Partner (Non-Amazon) products. This could suggest that Amazon products are a more trustworthy brand, at the very least for the general products it offers. 
-
-
 
 ## Sources:
 - https://medium.com/@Shoemaker703/how-does-amazon-select-the-top-product-in-its-search-results-and-why-is-it-usually-one-of-amazons-662d122591d0
