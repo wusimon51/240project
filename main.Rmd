@@ -39,7 +39,7 @@ Our dataset is a subset of search queries on Amazon from a GitHub repository cre
 
 The actual data retrieval was done on January 21st, 2021 from a single location, Washington D.C. 
 
-Given the author's standards regarding amazon brands, the data collected was narrowed to 3,492 different queries and accumulated different information based on each query. We are interested in this data because it relates Amazon products and their quality to those of Amazon partners and independent retailers.
+Given the author's standards regarding Amazon brands, the data collected was narrowed to 3,492 different queries and accumulated different information based on each query. We are interested in this data because it relates Amazon products and their quality to those of Amazon partners and independent retailers.
 
 Using this data, we came up with three research questions to help us explore the characteristics that define an Amazon search:
 
@@ -67,14 +67,14 @@ amazon_variables = tibble(
                 "amazon_reviews",
                 "partner_reviews",
                 "third_party_reviews"),
-  Description = c("search term inputted into amazon website",
-                  "first amazon product ranking associated with search",
+  Description = c("search term inputted into Amazon website",
+                  "first Amazon product ranking associated with search",
                   "first parter product ranking associated with search",
                   "first third party product ranking associated with search",
-                  "average star rating of respective amazon product",
+                  "average star rating of respective Amazon product",
                   "average star rating of respective partner product",
                   "average star rating of respective third party product",
-                  "number of reviews of respective amazon product",
+                  "number of reviews of respective Amazon product",
                   "number of reviews of respective partner product",
                   "number of reviews of respective third party product")
 )
@@ -228,12 +228,13 @@ amazon %>%
     scale_y_log10() #Added log scale; don't know if it makes it look better or worse
 ```
 
-> Connecting to Q1, these two graphs show the contrast in product placement between amazon and non_amazon products. With its own products, amazon tends to place its own products either at a premiere position (1st) or much lower (down to approx. 60th), whereas non_amazon products are always placed in higher positions since third parties can produce more specialized products, also including general.
-> sNote that the tall bar ONLY accounts for situations in which Amazon's product is #1. While this may be reminicient of their product quality, it is not reflected in a general downward trend as the position increases. Instead, after position 1, the frequency is not consistent until a dropoff after 40.  This could suggest that Amazon does not place their items at #1 because they have the best quality, but rather that they want more viewer traffic over their products. 
+> Connecting to Q1, these two graphs show the contrast in product placement between Amazon and non_Amazon products. With its own products, Amazon tends to place its own products either at a premiere position (1st) or much lower (down to approx. 60th), whereas non_Amazon products are always placed in higher positions since third parties can produce more specialized products, also including general.
+
+> Note that the tall bar ONLY accounts for situations in which Amazon's product is #1. While this may be reminicient of their product quality, it is not reflected in a general downward trend as the position increases. Instead, after position 1, the frequency is not consistent until a dropoff after 40.  This could suggest that Amazon does not place their items at #1 because they have the best quality, but rather that they want more viewer traffic over their products. 
 
 
 ### Question 3
-- What is the difference in correlation for stars and reviews in products where Amazon is first compared to where non-amazon products come first?
+- What is the difference in correlation for stars and reviews in products where Amazon is first compared to where non-Amazon products come first?
 
 >We first filter products in which Amazon's position on the website is higher than the other two. Comparing stars to reviews, we generate a linear relationship between the two and graph the residuals based on our line of best fit. After that, we calculate the correlation coefficient relating our two variables. 
 
@@ -362,7 +363,7 @@ ci = ci_calc %>%
 ci
 ```
 
->We are 95% confident that the average difference in position between amazon products and third party products is between -0.366 and 1.45. Note that this includes 0, which provides evidence supporting the null hypothesis that the two sets of products are similar. 
+>We are 95% confident that the average difference in position between Amazon products and third party products is between -0.366 and 1.45. Note that this includes 0, which provides evidence supporting the null hypothesis that the two sets of products are similar. 
 
 >Next, we calculate the p-value: 
 
@@ -372,7 +373,7 @@ pvalue = 2*pt(-abs(amazon_sum$t), amazon_sum$n-1)
 pvalue
 ```
 
->There is a good chance (p = 0.24) that the mean difference in position between amazon products and third party products is 0. 
+>There is a good chance (p = 0.24) that the mean difference in position between Amazon products and third party products is 0. 
 
 ### Question 5
 - Hypothesis Test: Are Amazon partner products on average placed higher than 
@@ -443,7 +444,7 @@ After running our methods on the dataset, we hope to achieve an answer as to how
 ## Limitations of our Study
 Especially with a project idea like studying Amazon search results, we encountered a lot of limitations in understanding the data. 
 
-Originally we had planned to study whether Amazon places its own products higher on the the site, compared to non_amazon products, but one limitation was that we didn't have search volume data. To retrieve the original data set from the github repo, would have been too big for this project span. Instead, using the subset of search results we had, we decided to change the study to examine how amazon products are defined.
+Originally we had planned to study whether Amazon places its own products higher on the the site, compared to non_Amazon products, but one limitation was that we didn't have search volume data. To retrieve the original data set from the github repo, would have been too big for this project span. Instead, using the subset of search results we had, we decided to change the study to examine how Amazon products are defined.
 
 This data was collected in January 21st, 2021, although being recent, we do understand that company frameworks (including Amazon's) change over time, so search results could behave more differently in the present.
 
