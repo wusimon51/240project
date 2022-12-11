@@ -60,7 +60,7 @@ For each search query, there is an associated Amazon product, Partner product, I
 | **Partner Product** : Third Party Sellers under a partnership with Amazon for marketing purposes
 |       **Classification** : Non_Amazon
 |
-| **Independent Product** : Third Party Sellers not under a partnership with Amazon
+| **Third Party Product** : Third Party Sellers not under a partnership with Amazon
 |       **Classification** : Non_Amazon
 |
 
@@ -376,7 +376,7 @@ Our analysis upon the the correlation between number of stars and number of revi
 We conduct two hypothesis tests: the first one is that Amazon products are on average placed higher than third-party products, and the second is that Amazon partner products are on average placed higher than third-party products. With these hypothesis tests on the differences in means, we can present our numerical results as an answer to whether Amazon and partner products are placed higher than third-party products. We will then run summary statistics on stars and reviews comparing the same groups to see if our mean positions are justified, i.e. a product with a higher star rating and more reviews is placed higher than the rest. 
 
 ### Question 4
-- Hypothesis Test: Are Amazon products on average placed higher than those from third-party sellers?
+- Hypothesis Test: Are Amazon products on average placed higher than Third Party Products?
 
 >We will answer this question by performing a series of mutations on our data in order to calculate two distinct values. First, we will find the difference in values between these two groups, and use these values to search for the true mean between them. In order to do that, we will construct a 95% confidence interval of where we think the true mean resides. Finally, we will calculate a t-statistic and use this to calculate a p-value to show how probable our hypothesized mean is compared to the true mean. For both tests, in order to test if one group is higher than the other, we will first need to test if both groups are similar. To test similarity, we will predict a mean of 0. If 0 is within the 95% confidence interval, we can assume that there is a probable chance it is the true mean. This is similar to our p-value. If the p-value is over 0.05, we can assume that there is a statistically significant chance that our predicted value could be the true mean. 
 
@@ -449,8 +449,7 @@ pvalue
 >There is a good chance (p = 0.24) that the mean difference in position between Amazon products and third party products is 0. 
 
 ### Question 5
-- Hypothesis Test: Are Amazon partner products on average placed higher than 
-those from third-party sellers?
+- Hypothesis Test: Are Amazon Partner Products on average placed higher than those from Third Party Products?
 
 >We will then repeat our hypothesis test for comparing Third Party products vs Partner products.
 
@@ -510,6 +509,65 @@ pvalue
 
 ## Analysis of Hypothesis Tests
 According to our data, Amazon and its partners do not share any privileges of being placed higher on the website. There is strong evidence that they are equal in placement. Third-party products, however, do not share this privilege. They are on average placed way lower on the website than Amazon products, and there is very strong evidence to suggest that they are not equal. 
+
+### Question 6
+- Hypothesis Test: Are Amazon Products on average placed higher than Partner Products?
+
+> We will then repeat our hypothesis test for comparing Amazon Products vs Partner products.
+
+Model 
+$$
+X_i \ \sim \ F_1(\mu_1, \sigma_1), i = 1, ..., n_1 \\
+Y_i \ \sim \ F_2(\mu_2, \sigma_2), i = 1, ..., n_2
+$$
+Hypothesis test
+$$
+H_0 : \mu_1 = \mu_2     \\
+H_a : \mu_1 \ne \mu_2
+$$
+Our test statistic is T
+
+If the null hypothesis is true, then:
+$$ 
+X_i = Y_i
+$$
+
+>Same as last time, we now construct a confidence interval for the mean of our two groups. 
+
+```{r, echo = FALSE}
+#Repeated process with Third Party vs Partner
+#Note that confidence interval is 14.5 - 15.8, which does not include 0
+#This data rejects the null hypothesis
+amazon_sum2 = amazon %>% 
+  mutate(diff = amazon-partner) %>% 
+  summarize(n = n(),
+            mean = mean(diff),
+            sd = sd(diff),
+            r = cor(amazon, partner),
+            t = mean/(sd/sqrt(n)))
+
+ci_calc = amazon_sum2 %>% 
+  mutate(se = sd/sqrt(n), 
+         tmult = qt(0.975, n-1), 
+         me = tmult*se,
+         low = mean - me, 
+         high = mean + me)
+
+ci = ci_calc %>% 
+  select(low, high)
+
+ci
+```
+>We are 95% confident that the mean difference between third party products and partner products is between 14.5 and 15.8. Note that 0 is not within our confidence interval, as opposed to the previous hypothesis test. This, on the other hand, provides evidence contrary to the null hypothesis, which would then suggest that the two sets of products (Amazon and Partner) are not similar. 
+
+> And again, we calculate our p value to test how probable our hypothesized mean of 0 is when compared to the mean of our dataset. 
+
+```{r, echo=FALSE}
+pvalue = 2*pt(-abs(amazon_sum2$t), amazon_sum2$n-1)
+pvalue
+```
+
+>(Note that the calulated value was so small, our computer was forced to round to 0) Because of this, we are almost certain (p≈0) that the mean difference between Amazon and Partner products is not 0. 
 
 ## Discussion
 After running our methods on the dataset, we hope to achieve an answer as to how Amazon creates its search results, whether it places products from itself and its partners above products from third-party sellers. This is done after taking stars and review counts into consideration. The implications of this could be that Amazon manipulates its search results, where it favors third-party products the least despite having better stars and more reviews.
