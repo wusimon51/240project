@@ -224,12 +224,13 @@ As for specific searches, Amazon typically does not have its own brand, causing 
 ### Question 2
 - What is the distribution of positions for Amazon products compared to Partner (Non-Amazon) products in search results?
 
-> We answer this by generating a graph of all Amazon products and the frequency of their position on the website. 
+> We answer this by generating a graph of all Amazon products and the frequency of their position on the website. The vertical line at x = 1 represents our threshold of general
+versus specific terms.
 
 ```{r, echo = F}
 amazon %>%
     ggplot(aes(x=amazon)) +
-    geom_bar(fill = 'blue', color = 'black') +
+    geom_bar(fill = 'blue', color = 'black', alpha = 0.8) + # 0.8 to make blue less bold
     ggtitle("Distribution of Positions for Amazon Products", subtitle="(Lower is better)") +
     xlab("Position on Amazon") +
     ylab("Frequency") +
