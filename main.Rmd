@@ -160,13 +160,12 @@ sigma = sd(threshold)
 pnorm(1, mean = mu, sd = sigma)
 ```
 
-
 Considering the lower ~ 13% of the values, we use the lowest possible value 1, which would say that a large majority of amazon products (87%) are positioned greater than 1. Even though the 11% does not capture the more realistic average of 3% (12 million / 353 million products), we end up using 1 as the threshold since it is the lowest value in our position ranking. Any products placed with a value of 1 are considered General Products, while all others (greater than 1) are considered Specific Products. 
 
 ### Question 1
 - How do General and Specific Search Terms Position Averages Vary?
 
->We answer this by comparing general and specific search queries average position using boxplots between Amazon and Partner (Non_Amazon) products.
+>We answer this by comparing general and specific search queries average position using boxplots between Amazon and Partner (Non-Amazon) products.
 
 ```{r, echo=FALSE}
 
@@ -182,7 +181,8 @@ specific_search = specific_search %>%
 colors = c("blue", "orange")
 ggplot(specific_search, aes(x=product_type, y=position)) +
   geom_boxplot(color=colors) +
-  ggtitle("Position Average for Specific Products") +
+  ggtitle("Position Average for Specific Products", subtitle="(Lower is better)") +
+    
   xlab("Product Type") +
   ylab("Position")
 
@@ -195,14 +195,11 @@ general_search = amazon %>%
 general_search = general_search %>% 
   pivot_longer(cols=1:2, names_to = "product_type", values_to = "position")
 
-
 ggplot(general_search, aes(x=product_type, y=position)) +
   geom_boxplot(color=colors) +
-  ggtitle("Position Average for General Products") +
+  ggtitle("Position Average for General Products", subtitle="(Lower is better)") +
   xlab("Product Type") +
   ylab("Position")
-
-
 ```
 
 ####   Analysis 
@@ -212,7 +209,7 @@ As for specific searches, Amazon typically does not have its own brand, causing 
 
 
 ### Question 2
-- What is the distribution of positions for Amazon products compared to Partner (Non_Amazon) products in search results?
+- What is the distribution of positions for Amazon products compared to Partner (Non-Amazon) products in search results?
 
 > We answer this by generating a graph of all Amazon products and the frequency of their position on the website. 
 
@@ -235,16 +232,16 @@ amazon %>%
 ```
 
 ####   Analysis 
-Connecting to Q1, these two graphs show the contrast in product placement between Amazon and non_Amazon products. With its own products, Amazon tends to place its own products either at a premiere position (1st) or much lower (down to approx. 60th), whereas non_Amazon products are always placed in higher positions since third parties can produce more specialized products, also including general.
+Connecting to Q1, these two graphs show the contrast in product placement between Amazon and non-Amazon products. With its own products, Amazon tends to place its own products either at a premiere position (1st) or much lower (down to approx. 60th), whereas non_Amazon products are always placed in higher positions since third parties can produce more specialized products, also including general.
 
-Note that the tall bar ONLY accounts for situations in which Amazon's product is #1. While this may be reminicient of their product quality, it is not reflected in a general downward trend as the position increases. Instead, after position 1, the frequency is not consistent until a dropoff after 40.  This could suggest that Amazon does not place their items at #1 because they have the best quality, but rather that they want more viewer traffic over their products. 
+Note that the tall bar ONLY accounts for situations in which Amazon's product is #1. While this may be reminiscent of their product quality, it is not reflected in a general downward trend as the position increases. Instead, after position 1, the frequency is not consistent until a dropoff after 40.  This could suggest that Amazon does not place their items at #1 because they have the best quality, but rather that they want more viewer traffic over their products. 
 
 
 ### Question 3
 - What is the difference in correlation for stars and reviews in products where Amazon is first compared to where Partner (Non-Amazon) products come first?
 
 #### Amazon Products
-> We first filter products in which Amazon's position on the website is higher than the Partner (Non_Amazon) product. 
+> We first filter products in which Amazon's position on the website is higher than the Partner (Non-Amazon) product. 
 
 ```{r, echo = F}
 amazon_first = amazon %>% #select products in which Amazon comes first
@@ -265,7 +262,7 @@ ggplot(amazon_first, aes(x = amazon_stars, y = amazon_reviews)) +
   xlab("Star Rating") +
   ylab("Review Count") +
   ggtitle("Correllation of Amazon Products", 
-          subtitle = "Where the product is ranked higher than Partner (Non_Amazon)")
+          subtitle = "Where the product is ranked higher than Partner (Non-Amazon)")
 ```
 
 > Comparing stars to reviews, we generate a linear relationship between using amazon_reviews to predict amazon_stars and graph the residuals based on our line of best fit. After that, we calculate the correlation coefficient relating our two variables. 
@@ -293,11 +290,11 @@ correlation1
 
 The spread of the residuals in this plot is pretty evenly spread out, with a correlation coefficient of .27. While this is low, it's expected not to have a perfect correlation as most products are rated very close together.
 
-#### Partner (Non_Amazon) products
+#### Partner (Non-Amazon) products
 
-Next, we do the same thing as before, but instead we look at products in which Partner (Non_Amazon) products came before Amazon.
+Next, we do the same thing as before, but instead we look at products in which Partner (Non-Amazon) products came before Amazon.
 
-> We first filter products in which Amazon's position on the website is higher than the Partner (Non_Amazon) product. 
+> We first filter products in which Amazon's position on the website is higher than the Partner (Non-Amazon) product. 
 
 ```{r, echo = F}
 # Same as previous, but with non-amazon products (partner)
@@ -318,7 +315,7 @@ ggplot(non_amazon_first, aes(x = partner_stars, y = partner_reviews)) +
   geom_smooth(se = F, color = "red") +
   xlab("Star Rating") +
   ylab("Review Count") +
-  ggtitle("Correllation of Partner (Non_Amazon) Products", 
+  ggtitle("Correllation of Partner (Non-Amazon) Products", 
           subtitle = "Where the product is ranked higher than Amazon products")
 ```
 
@@ -353,7 +350,7 @@ Going back to one of our original questions for this study:
 
 - Can we assume the type of search by simply looking at the product's ranking, stars and reviews on Amazon? 
 
-Our analysis upon the the correlation between number of stars and number of reviews turned low for both Amazon and Partner (Non_Amazon) products, suggesting that these are not perfect indicators to look at. We believe this may have to do with reviews, since a product can have a low star rating and a lot of negative reviews, or a high star rating with a few positive reviews, which we wouldn't generally expect. This in turn can shift our data somewhat randomly, not allowing for consistent results. This could be a **limitation**, since our data does not show the review quality for each product, positive or negative.
+Our analysis upon the the correlation between number of stars and number of reviews turned low for both Amazon and Partner (Non-Amazon) products, suggesting that these are not perfect indicators to look at. We believe this may have to do with reviews, since a product can have a low star rating and a lot of negative reviews, or a high star rating with a few positive reviews, which we wouldn't generally expect. This in turn can shift our data somewhat randomly, not allowing for consistent results. This could be a **limitation**, since our data does not show the review quality for each product, positive or negative.
 
 
 
