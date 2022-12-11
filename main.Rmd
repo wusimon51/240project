@@ -48,6 +48,8 @@ Using this data, we came up with three research questions to help us explore the
 
 - How do Amazon's products compare to those marketed by non-Amazon retailers?
 
+We chose to attempt to answer these questions based on sheer relevance. Hundreds of millions of Americans use Amazon frequently, including us. We wanted to know how their products compare to those of the general retailers we were used to before Amazon came along. Specifically, as college students who frequently need to buy new school supplies, food, items for new living spaces, etc., we do a lot of online shopping. If Amazon advertises products that don't hold up against its competitors, we deserve to know about the truth. 
+
 ## Background
 This data includes three main categories relating to the Amazon search queries—position on the results page, Amazon stars, and Amazon review count. 
 For each search query, there is an associated Amazon product, Partner product, Independent product ranking, and associated star rating and review count for each product type. 
