@@ -530,14 +530,13 @@ Based on Question 2 of our analysis, which suggested that Amazon does not market
 Moreover, when we ran our hypothesis tests comparing the mean placement of Amazon vs Partner, we found a strong difference between the two. This rejected our null hypothesis, suggesting that ranking does could be determining the placement of Amazon products on their website. 
 
 ## References
-Buck, Andrew. “57 Amazon Statistics to Know in 2022.” LandingCube, 20 June 2022,                          
+Buck, Andrew. “57 Amazon Statistics to Know in 2022.” LandingCube, 20 June 2022,
   https://landingcube.com/amazon-statistics/. 
 
 Hill, Simon. “How to Spot Fake Reviews on Amazon.” Wired, Conde Nast, 22 Aug. 2022,         
   https://www.wired.com/story/how-to-spot-fake-reviews-amazon/#:~:text=The%20trouble%20is%20that%20many,negative%20r   eviews%20on%20competing%20products. 
 
-Schumann, Scott. “How Does Amazon Select the Top Product in Its Search Results, and Why Is It Usually One of 
-  Amazon's?” Medium, 8 Nov. 2021,     
+Schumann, Scott. “How Does Amazon Select the Top Product in Its Search Results, and Why Is It Usually One of Amazon's?” Medium, 8 Nov. 2021,     
   https://medium.com/@Shoemaker703/how-does-amazon-select-the-top-product-in-its-search-results-and-why-is-it-usuall   y-one-of-amazons-662d122591d0. 
 
 The-Markup. “Amazon Brands and Exclusives.” GitHub, https://github.com/the-markup/investigation-amazon-brands. 
