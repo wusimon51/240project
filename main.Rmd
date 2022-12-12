@@ -529,7 +529,7 @@ Based on Question 2 of our analysis, which suggested that Amazon does not market
 
 Moreover, when we ran our hypothesis tests comparing the mean placement of Amazon vs Partner, we found a strong difference between the two. This rejected our null hypothesis, suggesting that ranking does could be determining the placement of Amazon products on their website. 
 
-## Sources:
+## References
 Buck, Andrew. “57 Amazon Statistics to Know in 2022.” LandingCube, 20 June 2022,                          
   https://landingcube.com/amazon-statistics/. 
 
